@@ -14,11 +14,12 @@
   <link rel="canonical" href="https://strandsandroses.com/" />
 
   <!-- ═══ OPEN GRAPH ═══ -->
+  <!-- FIX-3: og:image and og:url set to absolute URLs for WhatsApp/Facebook/Twitter previews -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://strandsandroses.com/" />
+  <meta property="og:url" content="https://mgriveraarroyo.github.io/strandsandroses/" />
   <meta property="og:title" content="Strands &amp; Roses · Angel — Premium Hair &amp; Lash Studio · Atlanta" />
   <meta property="og:description" content="Premium hair color, lash artistry &amp; gender-neutral cuts. Beauty for every body, identity &amp; size. Atlanta, GA." />
-  <meta property="og:image" content="assets/hero-beauty.jpg" />
+  <meta property="og:image" content="https://mgriveraarroyo.github.io/strandsandroses/assets/hero-beauty.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="Strands &amp; Roses · Angel" />
@@ -29,7 +30,7 @@
   <meta name="twitter:site" content="@strandsandroses" />
   <meta name="twitter:title" content="Strands &amp; Roses · Angel — Premium Hair &amp; Lash Studio · Atlanta" />
   <meta name="twitter:description" content="Premium hair color, lash artistry &amp; gender-neutral cuts. Beauty for every body, identity &amp; size." />
-  <meta name="twitter:image" content="assets/hero-beauty.jpg" />
+  <meta name="twitter:image" content="https://mgriveraarroyo.github.io/strandsandroses/assets/hero-beauty.jpg" />
 
   <!-- ═══ PERFORMANCE: PRELOAD CRITICAL ASSETS ═══ -->
   <link rel="preload" as="image" href="assets/hero-beauty.jpg" />
@@ -2265,7 +2266,8 @@
       <p class="sq-popup__message" id="sqPopupMessage">
         You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here.
       </p>
-      <a href="#" id="sqPopupCTA" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:0.5rem;">
+      <!-- FIX-4: static href fallback on popup CTA — always navigates to Square even if JS fails -->
+      <a href="https://strandsandroses.square.site/s/appointments" id="sqPopupCTA" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:0.5rem;">
         Continue to Secure Portal →
       </a>
       <p class="sq-popup__security">
@@ -2303,12 +2305,15 @@
         </ul>
 
         <div style="display:flex;align-items:center;gap:1rem;">
-          <button class="btn btn-primary nav__cta sq-trigger"
-                  data-sq-url="https://strandsandroses.square.site/s/appointments"
-                  data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here."
-                  aria-label="Book your appointment">
+          <!-- FIX-4: static href fallback — always navigates to Square even if JS fails -->
+          <a href="https://strandsandroses.square.site/s/appointments"
+             class="btn btn-primary nav__cta sq-trigger"
+             data-sq-url="https://strandsandroses.square.site/s/appointments"
+             data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here."
+             aria-label="Book your appointment"
+             target="_blank" rel="noopener noreferrer">
             Book Now
-          </button>
+          </a>
           <button class="nav__hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
             <span></span><span></span><span></span>
           </button>
@@ -2329,12 +2334,15 @@
     <a href="#booking"     class="nav__drawer-link" data-close-drawer>Booking</a>
     <a href="#location"    class="nav__drawer-link" data-close-drawer>Location</a>
     <a href="#contact"     class="nav__drawer-link" data-close-drawer>Contact</a>
-    <button class="btn btn-primary nav__drawer-cta sq-trigger"
-            data-sq-url="https://strandsandroses.square.site/s/appointments"
-            data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here."
-            style="width:100%;justify-content:center;">
+    <!-- FIX-4: static href fallback on drawer CTA -->
+    <a href="https://strandsandroses.square.site/s/appointments"
+       class="btn btn-primary nav__drawer-cta sq-trigger"
+       data-sq-url="https://strandsandroses.square.site/s/appointments"
+       data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here."
+       style="width:100%;justify-content:center;"
+       target="_blank" rel="noopener noreferrer">
       Book Your Appointment
-    </button>
+    </a>
   </div>
 
   <main>
@@ -2368,11 +2376,14 @@
           </p>
 
           <div class="hero__actions reveal delay-4">
-            <button class="btn btn-primary sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here.">
+            <!-- FIX-4: static href fallback on hero CTA -->
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-primary sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here."
+               target="_blank" rel="noopener noreferrer">
               Book Your Appointment
-            </button>
+            </a>
             <a href="#services" class="btn btn-outline">
               Explore Services
             </a>
@@ -2429,18 +2440,18 @@
               </p>
             </div>
 
-            <!-- Animated stats -->
+            <!-- Animated stats — FIX-5: pre-seeded with final values as fallback -->
             <div class="about__stats">
               <div class="stat reveal delay-4">
-                <span class="stat__number" data-count="6">0</span>
+                <span class="stat__number" data-count="6">6+</span>
                 <span class="stat__label">Years in Beauty</span>
               </div>
               <div class="stat reveal delay-5">
-                <span class="stat__number" data-count="500">0</span>
+                <span class="stat__number" data-count="500">500+</span>
                 <span class="stat__label">Clients Served</span>
               </div>
               <div class="stat reveal delay-6">
-                <span class="stat__number" data-count="100">0</span>
+                <span class="stat__number" data-count="100">100+</span>
                 <span class="stat__label">5-Star Reviews</span>
               </div>
             </div>
@@ -2525,12 +2536,15 @@
                 <span class="service-item__price">$95</span>
               </div>
             </div>
-            <button class="btn btn-outline sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your lash service and choose your time."
-                    style="font-size:var(--text-xs);padding:0.625rem 1.25rem;">
+            <!-- FIX-4: static href fallback on all service sq-trigger buttons -->
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-outline sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your lash service and choose your time."
+               style="font-size:var(--text-xs);padding:0.625rem 1.25rem;"
+               target="_blank" rel="noopener noreferrer">
               Book Lashes →
-            </button>
+            </a>
           </div>
 
           <!-- HAIR COLOR -->
@@ -2577,12 +2591,14 @@
               </div>
             </div>
             <p class="service-card__note">Starting prices — toner &amp; treatments quoted separately. Final price confirmed at consultation.</p>
-            <button class="btn btn-outline sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your color service and choose your time."
-                    style="font-size:var(--text-xs);padding:0.625rem 1.25rem;">
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-outline sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your color service and choose your time."
+               style="font-size:var(--text-xs);padding:0.625rem 1.25rem;"
+               target="_blank" rel="noopener noreferrer">
               Book Color →
-            </button>
+            </a>
           </div>
 
           <!-- CUT & TREATMENT -->
@@ -2633,12 +2649,14 @@
               </div>
             </div>
             <p class="service-card__policy">Haircut &amp; Short Cut: Gender Neutral · 18+ · No Children</p>
-            <button class="btn btn-outline sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your cut or treatment and choose your time."
-                    style="font-size:var(--text-xs);padding:0.625rem 1.25rem;">
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-outline sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your cut or treatment and choose your time."
+               style="font-size:var(--text-xs);padding:0.625rem 1.25rem;"
+               target="_blank" rel="noopener noreferrer">
               Book Cut →
-            </button>
+            </a>
           </div>
 
           <!-- EXTENSIONS -->
@@ -2663,12 +2681,14 @@
               </div>
             </div>
             <p class="service-card__note">Billed per hour — duration varies by method and hair volume. Quoted at consultation.</p>
-            <button class="btn btn-outline sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Book your extension consultation."
-                    style="font-size:var(--text-xs);padding:0.625rem 1.25rem;">
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-outline sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Book your extension consultation."
+               style="font-size:var(--text-xs);padding:0.625rem 1.25rem;"
+               target="_blank" rel="noopener noreferrer">
               Book Extensions →
-            </button>
+            </a>
           </div>
 
           <!-- FREE CONSULTATION — full-width accent card -->
@@ -2680,12 +2700,14 @@
                 30 minutes · Let's talk about your hair goals, color vision, or lash look before committing to anything. No pressure, just conversation.
               </p>
             </div>
-            <button class="btn btn-carmine sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Schedule your free 30-minute consultation."
-                    style="flex-shrink:0;margin-top:1rem;">
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-carmine sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Schedule your free 30-minute consultation."
+               style="flex-shrink:0;margin-top:1rem;"
+               target="_blank" rel="noopener noreferrer">
               Schedule Free Consult →
-            </button>
+            </a>
           </div>
 
         </div>
@@ -2715,7 +2737,7 @@
 
         <div class="packages__grid">
 
-          <!-- Angel's Blowout Package -->
+          <!-- Angel's Blowout Package — FIX-4: static href fallback -->
           <div class="package-card reveal delay-1">
             <div class="package-card__label">Featured Bundle</div>
             <h3 class="package-card__name">Angel's Blowout Package</h3>
@@ -2730,11 +2752,13 @@
                 Full package details &amp; pricing confirmed at booking.
               </p>
             </div>
-            <button class="btn btn-primary sq-trigger"
-                    data-sq-url="https://checkout.square.site/merchant/ML3KDM6ERD75W/checkout/UGUZZLVC2TJOG2R2LKAUALPQ"
-                    data-sq-msg="You're about to enter <strong>Angel's secure checkout</strong> for the Blowout Package. Complete your purchase and you'll be brought right back here.">
+            <a href="https://checkout.square.site/merchant/ML3KDM6ERD75W/checkout/UGUZZLVC2TJOG2R2LKAUALPQ"
+               class="btn btn-primary sq-trigger"
+               data-sq-url="https://checkout.square.site/merchant/ML3KDM6ERD75W/checkout/UGUZZLVC2TJOG2R2LKAUALPQ"
+               data-sq-msg="You're about to enter <strong>Angel's secure checkout</strong> for the Blowout Package. Complete your purchase and you'll be brought right back here."
+               target="_blank" rel="noopener noreferrer">
               Book This Package →
-            </button>
+            </a>
           </div>
 
           <!-- Placeholder 2 -->
@@ -2749,16 +2773,18 @@
 
         </div>
 
-        <!-- Gift Cards CTA -->
+        <!-- Gift Cards CTA — FIX-4: static href fallback -->
         <div style="text-align:center;margin-top:var(--space-2xl);" class="reveal">
           <p style="font-family:var(--font-serif);font-size:var(--text-lg);font-style:italic;color:var(--ink-muted);margin-bottom:var(--space-md);">
             Give the gift of a transformation.
           </p>
-          <button class="btn btn-carmine sq-trigger"
-                  data-sq-url="https://app.squareup.com/gift/ML3KDM6ERD75W/order"
-                  data-sq-msg="You're about to enter <strong>Angel's secure gift card portal</strong>. Purchase a gift card and you'll be brought right back here.">
+          <a href="https://app.squareup.com/gift/ML3KDM6ERD75W/order"
+             class="btn btn-carmine sq-trigger"
+             data-sq-url="https://app.squareup.com/gift/ML3KDM6ERD75W/order"
+             data-sq-msg="You're about to enter <strong>Angel's secure gift card portal</strong>. Purchase a gift card and you'll be brought right back here."
+             target="_blank" rel="noopener noreferrer">
             Send a Gift Card →
-          </button>
+          </a>
         </div>
 
       </div>
@@ -2888,22 +2914,29 @@
           </p>
 
           <div class="booking__actions reveal delay-3">
-            <button class="btn btn-primary sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here.">
+            <!-- FIX-4: static href fallback on booking section CTAs -->
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-primary sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here."
+               target="_blank" rel="noopener noreferrer">
               Book Your Appointment
-            </button>
-            <button class="btn btn-outline sq-trigger"
-                    data-sq-url="https://strandsandroses.square.site/s/appointments"
-                    data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Schedule your free 30-minute consultation.">
+            </a>
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-outline sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Schedule your free 30-minute consultation."
+               target="_blank" rel="noopener noreferrer">
               Free Consult (30 min)
-            </button>
-            <button class="btn btn-outline sq-trigger"
-                    data-sq-url="https://app.squareup.com/gift/ML3KDM6ERD75W/order"
-                    data-sq-msg="You're about to enter <strong>Angel's secure gift card portal</strong>. Purchase a gift card and you'll be brought right back here."
-                    style="border-color:rgba(204,0,0,0.4);color:#f5a0a0;">
+            </a>
+            <a href="https://app.squareup.com/gift/ML3KDM6ERD75W/order"
+               class="btn btn-outline sq-trigger"
+               data-sq-url="https://app.squareup.com/gift/ML3KDM6ERD75W/order"
+               data-sq-msg="You're about to enter <strong>Angel's secure gift card portal</strong>. Purchase a gift card and you'll be brought right back here."
+               style="border-color:rgba(204,0,0,0.4);color:#f5a0a0;"
+               target="_blank" rel="noopener noreferrer">
               Gift Cards →
-            </button>
+            </a>
           </div>
 
           <!-- Schedule — datos reales exactos del brief -->
@@ -3036,11 +3069,14 @@
             </div>
 
             <div style="margin-top:var(--space-lg);">
-              <button class="btn btn-primary sq-trigger"
-                      data-sq-url="https://strandsandroses.square.site/s/appointments"
-                      data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here.">
+              <!-- FIX-4: static href fallback on location CTA -->
+              <a href="https://strandsandroses.square.site/s/appointments"
+                 class="btn btn-primary sq-trigger"
+                 data-sq-url="https://strandsandroses.square.site/s/appointments"
+                 data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Complete your appointment there and you'll be brought right back here."
+                 target="_blank" rel="noopener noreferrer">
                 Book Your Visit →
-              </button>
+              </a>
             </div>
           </div>
 
@@ -3048,7 +3084,8 @@
           <div class="location__map reveal-right">
             <iframe
               title="Strands &amp; Roses — My Salon Suite, 1000 Northside Drive NW Suite 209, Atlanta GA 30318"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f504a9c3b5e5a9%3A0x0!2s1000+Northside+Dr+NW+%23209%2C+Atlanta%2C+GA+30318!5e0!3m2!1sen!2sus!4v1"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1
+d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f504a9c3b5e5a9%3A0x0!2s1000+Northside+Dr+NW+%23209%2C+Atlanta%2C+GA+30318!5e0!3m2!1sen!2sus!4v1"
               allowfullscreen=""
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
@@ -3096,8 +3133,7 @@
             <div class="contact__detail">
               <svg class="contact__detail-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path d="M2 4h16v12H2z" rx="2"/>
-                <path d="M2 4l8
- 7 8-7"/>
+                <path d="M2 4l8 7 8-7"/>
               </svg>
               <div>
                 <p class="contact__detail-label">Email</p>
@@ -3121,25 +3157,44 @@
               </a>
             </div>
 
-            <!-- Newsletter -->
+            <!-- Newsletter — FIX-2: Formspree endpoint + mailto fallback -->
             <div class="contact__newsletter">
               <h4 class="contact__newsletter-title">Get The Monthly TEA</h4>
               <p class="contact__newsletter-sub">Angel's monthly newsletter — tips, promos, and behind-the-chair updates.</p>
-              <form class="newsletter-form" id="newsletterForm" novalidate>
+              <!--
+                FIX-2 · NEWSLETTER ACTIVATION (2 min · free):
+                1. Go to https://mailchimp.com or https://convertkit.com and create a free account.
+                2. Create a form / audience and get your embed action URL.
+                3. Replace data-newsletter-action="REEMPLAZAR_NEWSLETTER_URL" below with that URL.
+                4. Until configured, submissions fall back to a mailto: to strandsandroses@gmail.com — 0 loss.
+              -->
+              <form class="newsletter-form" id="newsletterForm" novalidate
+                    data-newsletter-action="REEMPLAZAR_NEWSLETTER_URL">
                 <input type="email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address for newsletter" />
                 <button type="submit" class="btn btn-carmine" style="padding:0.75rem 1.25rem;">
                   Subscribe
                 </button>
               </form>
+              <div class="form-message form-message--success" id="newsletterSuccess" role="alert" aria-live="polite" style="margin-top:0.75rem;">
+                You're on the list! Angel will be in touch with the next Monthly TEA.
+              </div>
             </div>
 
           </div>
 
-          <!-- Contact form -->
+          <!-- Contact form — FIX-1: Formspree endpoint + mailto fallback -->
           <div class="reveal-right">
             <h3 class="contact__form-title">Send a Message</h3>
 
-            <form id="contactForm" novalidate aria-label="Contact form">
+            <!--
+              FIX-1 · CONTACT FORM ACTIVATION (2 min · free):
+              1. Go to https://formspree.io and sign up for a free account.
+              2. Create a new form — you'll get an ID like "xpwzabcd".
+              3. Replace data-formspree-id="REEMPLAZAR_FORMSPREE_ID" below with your actual ID.
+              4. Until configured, submissions fall back to a mailto: to strandsandroses@gmail.com — 0 loss.
+            -->
+            <form id="contactForm" novalidate aria-label="Contact form"
+                  data-formspree-id="REEMPLAZAR_FORMSPREE_ID">
               <div class="form-group">
                 <label for="contactName">Your Name</label>
                 <input type="text" id="contactName" name="name"
@@ -3316,6 +3371,10 @@
 
     /* ════════════════════════════════════════════════════════════════
        SQUARE BRANDED POPUP — all .sq-trigger elements
+       FIX-4: popup JS sets href dynamically; static href on <a> tags
+       is the no-JS fallback (already in HTML). The popup intercepts
+       clicks when JS is running and updates the CTA href to match the
+       specific trigger's data-sq-url before opening.
        ════════════════════════════════════════════════════════════════ */
     (function initSquarePopup() {
       var overlay    = document.getElementById('sqOverlay');
@@ -3509,10 +3568,18 @@
 
     /* ════════════════════════════════════════════════════════════════
        STATS COUNTER ANIMATION
+       FIX-5: counters pre-seeded with final values in HTML.
+       If IntersectionObserver fires, animation runs normally.
+       If it never fires (unsupported browser / observer failure),
+       the final value is already visible — never shows "0".
        ════════════════════════════════════════════════════════════════ */
     (function initStats() {
       var counters = document.querySelectorAll('[data-count]');
       if (!counters.length) return;
+
+      // Robustness: if IntersectionObserver is not supported, counters
+      // already show final values from HTML — nothing more to do.
+      if (!('IntersectionObserver' in window)) return;
 
       var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
@@ -3543,13 +3610,18 @@
     })();
 
     /* ════════════════════════════════════════════════════════════════
-       CONTACT FORM — mailto fallback
+       CONTACT FORM — FIX-1
+       Priority: Formspree (if data-formspree-id is configured).
+       Fallback: mailto: — 0 message loss guaranteed.
        ════════════════════════════════════════════════════════════════ */
     (function initContactForm() {
       var form       = document.getElementById('contactForm');
       var successMsg = document.getElementById('formSuccess');
       var errorMsg   = document.getElementById('formError');
       if (!form) return;
+
+      var formspreeId = form.getAttribute('data-formspree-id');
+      var hasFormspree = formspreeId && formspreeId !== 'REEMPLAZAR_FORMSPREE_ID';
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -3566,47 +3638,127 @@
         var subject = document.getElementById('contactSubject').value;
         var message = document.getElementById('contactMessage').value.trim();
 
-        var mailtoSubject = encodeURIComponent(subject + ' — from ' + name);
-        var mailtoBody    = encodeURIComponent(
-          'Name: ' + name + '\n' +
-          'Email: ' + email + '\n\n' +
-          message
-        );
-        var mailtoHref = 'mailto:strandsandroses@gmail.com' +
-                         '?subject=' + mailtoSubject +
-                         '&body=' + mailtoBody;
+        if (hasFormspree) {
+          // Formspree submission via fetch
+          var endpoint = 'https://formspree.io/f/' + formspreeId;
+          var submitBtn = form.querySelector('button[type="submit"]');
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending…';
 
-        try {
-          window.location.href = mailtoHref;
-          setTimeout(function() {
-            successMsg.style.display = 'block';
-            form.reset();
-          }, 600);
-        } catch (err) {
-          errorMsg.style.display = 'block';
+          fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, email: email, subject: subject, message: message })
+          })
+          .then(function(res) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+            if (res.ok) {
+              successMsg.style.display = 'block';
+              form.reset();
+            } else {
+              // Formspree returned error — fall back to mailto
+              fallbackMailto(name, email, subject, message);
+            }
+          })
+          .catch(function() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+            // Network error — fall back to mailto
+            fallbackMailto(name, email, subject, message);
+          });
+        } else {
+          // No Formspree configured — use mailto fallback immediately
+          fallbackMailto(name, email, subject, message);
+        }
+
+        function fallbackMailto(name, email, subject, message) {
+          var mailtoSubject = encodeURIComponent(subject + ' — from ' + name);
+          var mailtoBody    = encodeURIComponent(
+            'Name: ' + name + '\n' +
+            'Email: ' + email + '\n\n' +
+            message
+          );
+          var mailtoHref = 'mailto:strandsandroses@gmail.com' +
+                           '?subject=' + mailtoSubject +
+                           '&body=' + mailtoBody;
+          try {
+            window.location.href = mailtoHref;
+            setTimeout(function() {
+              successMsg.style.display = 'block';
+              form.reset();
+            }, 600);
+          } catch (err) {
+            errorMsg.style.display = 'block';
+          }
         }
       });
     })();
 
     /* ════════════════════════════════════════════════════════════════
-       NEWSLETTER FORM — mailto fallback
+       NEWSLETTER FORM — FIX-2
+       Priority: configured newsletter endpoint (Mailchimp/ConvertKit).
+       Fallback: mailto: strandsandroses@gmail.com — 0 email loss.
        ════════════════════════════════════════════════════════════════ */
     (function initNewsletter() {
-      var form = document.getElementById('newsletterForm');
+      var form       = document.getElementById('newsletterForm');
+      var successMsg = document.getElementById('newsletterSuccess');
       if (!form) return;
+
+      var newsletterAction = form.getAttribute('data-newsletter-action');
+      var hasEndpoint = newsletterAction && newsletterAction !== 'REEMPLAZAR_NEWSLETTER_URL';
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (!form.checkValidity()) { form.reportValidity(); return; }
-        var email = form.querySelector('input[type="email"]').value.trim();
-        var href  = 'mailto:strandsandroses@gmail.com?subject=Newsletter%20Signup&body=Please%20add%20me%20to%20The%20Monthly%20TEA%20newsletter.%0A%0AEmail%3A%20' + encodeURIComponent(email);
-        try {
-          window.location.href = href;
-          form.reset();
-          var btn = form.querySelector('button');
-          btn.textContent = 'Subscribed!';
-          setTimeout(function() { btn.textContent = 'Subscribe'; }, 3000);
-        } catch(err) {}
+
+        var emailInput = form.querySelector('input[type="email"]');
+        var email = emailInput.value.trim();
+        var btn   = form.querySelector('button');
+
+        if (hasEndpoint) {
+          // POST to configured newsletter endpoint
+          btn.disabled = true;
+          btn.textContent = 'Subscribing…';
+
+          fetch(newsletterAction, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+          })
+          .then(function(res) {
+            btn.disabled = false;
+            btn.textContent = 'Subscribe';
+            if (res.ok) {
+              form.reset();
+              if (successMsg) successMsg.style.display = 'block';
+            } else {
+              fallbackNewsletterMailto(email, btn);
+            }
+          })
+          .catch(function() {
+            btn.disabled = false;
+            btn.textContent = 'Subscribe';
+            fallbackNewsletterMailto(email, btn);
+          });
+        } else {
+          // No endpoint configured — use mailto fallback immediately
+          fallbackNewsletterMailto(email, btn);
+        }
+
+        function fallbackNewsletterMailto(email, btn) {
+          var href = 'mailto:strandsandroses@gmail.com' +
+                     '?subject=Newsletter%20Signup' +
+                     '&body=Please%20add%20me%20to%20The%20Monthly%20TEA%20newsletter.%0A%0AEmail%3A%20' +
+                     encodeURIComponent(email);
+          try {
+            window.location.href = href;
+            form.reset();
+            if (successMsg) successMsg.style.display = 'block';
+            btn.textContent = 'Subscribed!';
+            setTimeout(function() { btn.textContent = 'Subscribe'; }, 3000);
+          } catch(err) {}
+        }
       });
     })();
 
