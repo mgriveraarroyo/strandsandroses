@@ -2290,6 +2290,19 @@
       * { max-width: 100% !important; }
       img { width: auto; max-width: 100%; height: auto; }
     }
+
+    /* v5.2.3 · CODE FIX cursor visibility · ocultar cursor nativo desktop con custom rose · preservar caret texto en inputs */
+    @media (pointer: fine) and (hover: hover) {
+      html, body, a, button, .btn, [role="button"] {
+        cursor: none !important;
+      }
+      input, textarea, [contenteditable="true"], select {
+        cursor: text !important;
+      }
+      input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"] {
+        cursor: none !important;
+      }
+    }
 </style>
 </head>
 
