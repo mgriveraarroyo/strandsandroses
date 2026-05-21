@@ -647,7 +647,7 @@
       inset: 0;
       background-image: url('assets/hero-beauty.jpg');
       background-size: cover;
-      background-position: 50% 20%;
+      background-position: center;
       transform: scale(1.04);
       transition: transform 8s var(--ease-out);
       will-change: transform;
@@ -1297,10 +1297,36 @@
       border-radius: var(--radius-md);
     }
 
-    /* Elfsight / Behold embed container */
+    /* Elfsight Instagram Feed widget container */
     .ig-feed__widget {
       width: 100%;
-      min-height: 400px;
+      min-height: 420px;
+    }
+    /* Elfsight free-tier branding override — matches canvas/carmine palette */
+    .ig-feed__widget .eapps-instagram-feed-title-container {
+      display: none !important;
+    }
+    /* Widget activation notice (shown until widget ID is set) */
+    .ig-feed__activation {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem 2rem;
+      border: 1px dashed rgba(178,57,57,0.25);
+      border-radius: var(--radius-md);
+      text-align: center;
+      color: var(--ink-faint);
+      font-size: var(--text-sm);
+      letter-spacing: 0.04em;
+    }
+    .ig-feed__activation a {
+      color: var(--carmine);
+      text-decoration: none;
+    }
+    .ig-feed__activation a:hover {
+      text-decoration: underline;
     }
 
     /* C3 v5.2: Self-hosted IG grid (Opción B) — replaces Elfsight widget entirely */
@@ -2290,33 +2316,10 @@
       * { max-width: 100% !important; }
       img { width: auto; max-width: 100%; height: auto; }
     }
-
-    /* v5.2.3 · CODE FIX cursor visibility · ocultar cursor nativo desktop con custom rose · preservar caret texto en inputs */
-    @media (pointer: fine) and (hover: hover) {
-      html, body, a, button, .btn, [role="button"] {
-        cursor: none !important;
-      }
-      input, textarea, [contenteditable="true"], select {
-        cursor: text !important;
-      }
-      input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"] {
-        cursor: none !important;
-      }
-    }
-
-    /* v5.2.4 · CODE FIX hero photo crop · preservar cara Angel tablet/desktop landscape */
-    @media (min-width: 768px) {
-      .hero__bg {
-        background-position: 50% 15% !important;
-      }
-    }
-    @media (min-width: 1200px) {
-      .hero__bg {
-        background-position: 50% 12% !important;
-      }
-    }
 </style>
-</head>
+    <!-- Elfsight Instagram Feed widget platform -->
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+  </head>
 
 <body>
 
@@ -2930,24 +2933,58 @@
     <!-- ═══════════════════════════════════════════════════════════════
          SECTION 5 · INSTAGRAM CTA (HONEST · v5.2.2 fix · 0 self-hosted grid · 0 "feed" claim)
          ═══════════════════════════════════════════════════════════════ -->
-    <section id="instagram-cta" class="ig-cta section-pad" aria-labelledby="ig-cta-title">
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 5 · INSTAGRAM LIVE FEED
+         Widget: Elfsight Instagram Feed (free tier · 200 views/mo)
+         SETUP: https://elfsight.com/instagram-feed-instashow/
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="instagram-cta" class="ig-feed section-pad" aria-labelledby="ig-feed-title">
       <div class="container">
-        <div style="text-align:center;max-width:680px;margin:0 auto;padding:var(--space-2xl) 0;">
-          <p class="section-eyebrow reveal delay-1" style="margin-bottom:var(--space-md);">FOLLOW THE WORK</p>
-          <h2 class="section-title reveal delay-2" id="ig-cta-title" style="margin-bottom:var(--space-md);">
+
+        <!-- ── Header ── -->
+        <div class="ig-feed__header">
+          <span class="eyebrow reveal">Follow the Work</span>
+          <h2 class="section-title reveal delay-1" id="ig-feed-title">
             @strandsandroses
           </h2>
-          <p class="section-lead reveal delay-3" style="margin:0 auto var(--space-xl) auto;max-width:520px;">
-            See the latest hair color, lash transformations, and behind-the-scenes — straight from Angel's Instagram.
+          <p class="section-lead reveal delay-2" style="margin:0 auto;max-width:520px;">
+            See the latest hair color, lash transformations, and behind-the-scenes &mdash; live from Angel&rsquo;s Instagram.
           </p>
+        </div>
+
+        <!-- ── Elfsight Instagram Feed Widget ── -->
+        <!--
+          SETUP INSTRUCTIONS:
+          1. Go to https://elfsight.com/instagram-feed-instashow/ and sign up (free, no credit card)
+          2. Connect @strandsandroses as the feed source (requires account owner OAuth authorization)
+          3. Customize: grid layout, 3-4 columns, 9-12 posts, canvas/carmine color scheme
+          4. Copy the Widget ID (format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+          5. Replace WIDGET_ID_STRANDSANDROSES below with your actual Widget ID
+          Free tier: 200 views/month · 1 widget · Elfsight logo on hover
+          Basic plan ($5/mo): unlimited views · 3 widgets · no branding
+        -->
+        <div class="ig-feed__embed-wrap reveal delay-3">
+          <div class="ig-feed__widget">
+            <div class="elfsight-app-WIDGET_ID_STRANDSANDROSES" data-elfsight-app-lazy></div>
+          </div>
+        </div>
+
+        <!-- ── CTA Follow ── -->
+        <div class="ig-feed__cta reveal delay-4">
           <a href="https://www.instagram.com/strandsandroses"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn-primary reveal delay-4"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="btn btn-primary"
              style="display:inline-flex;align-items:center;gap:0.6rem;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="5"/>
+              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
             FOLLOW ON INSTAGRAM
           </a>
         </div>
+
       </div>
     </section>
 
