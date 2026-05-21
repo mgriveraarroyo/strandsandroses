@@ -190,7 +190,7 @@
       pointer-events: none;
       z-index: 9998;
       border-radius: 50%;
-      border: 1px solid rgba(204,0,0,0.35);
+      border: 1px solid rgba(245,160,160,0.5);
       transform: translate(-50%, -50%);
       transition: width var(--dur-base) var(--ease),
                   height var(--dur-base) var(--ease),
@@ -202,7 +202,7 @@
       width: 56px;
       height: 56px;
       border-color: rgba(245,160,160,0.6);
-      background: rgba(204,0,0,0.04);
+      background: rgba(245,160,160,0.08);
     }
 
     /* Petal trail elements — spawned by JS on mousemove */
@@ -2277,7 +2277,20 @@
         height: 80px;
       }
     }
-  </style>
+  
+    /* CODE FIX v5.2.1 · D1 overflow 320px responsive */
+    @media (max-width: 480px) {
+      html, body { overflow-x: hidden !important; }
+      .hero, .about, .services, .booking, .gallery, section { 
+        max-width: 100vw !important; 
+        overflow-x: hidden !important; 
+      }
+      .hero__title { font-size: clamp(2rem, 8vw, 4rem) !important; word-wrap: break-word; }
+      .hero__content { padding-left: 1rem !important; padding-right: 1rem !important; }
+      * { max-width: 100% !important; }
+      img { width: auto; max-width: 100%; height: auto; }
+    }
+</style>
 </head>
 
 <body>
@@ -2932,9 +2945,7 @@
             <!-- Tiles 3–6: styled placeholder tiles linking to IG — replaced with real photos post-launch -->
             <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
                class="ig-feed__thumb" aria-label="View more on @strandsandroses">
-              <div style="width:100%;height:100%;background:linear-gradient(135deg,#f5a0a0 0%,#cc0000 100%);display:flex;align-items:center;justify-content:center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
-              </div>
+              <img src="assets/ig-real-1.jpg" alt="Strands and Roses · lash transformation" loading="lazy" />
               <div class="ig-feed__thumb-overlay" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
               </div>
@@ -2942,9 +2953,7 @@
 
             <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
                class="ig-feed__thumb" aria-label="View more on @strandsandroses">
-              <div style="width:100%;height:100%;background:linear-gradient(135deg,#463939 0%,#cc0000 100%);display:flex;align-items:center;justify-content:center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
-              </div>
+              <img src="assets/ig-real-2.jpg" alt="Strands and Roses · hair color session" loading="lazy" />
               <div class="ig-feed__thumb-overlay" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
               </div>
@@ -2952,9 +2961,7 @@
 
             <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
                class="ig-feed__thumb" aria-label="View more on @strandsandroses">
-              <div style="width:100%;height:100%;background:linear-gradient(135deg,#f5efef 0%,#f5a0a0 100%);display:flex;align-items:center;justify-content:center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cc0000" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#cc0000" stroke="none"/></svg>
-              </div>
+              <img src="assets/ig-real-3.jpg" alt="Strands and Roses · full set lashes" loading="lazy" />
               <div class="ig-feed__thumb-overlay" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
               </div>
@@ -2962,9 +2969,7 @@
 
             <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
                class="ig-feed__thumb" aria-label="View more on @strandsandroses">
-              <div style="width:100%;height:100%;background:linear-gradient(135deg,#212121 0%,#463939 100%);display:flex;align-items:center;justify-content:center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5a0a0" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#f5a0a0" stroke="none"/></svg>
-              </div>
+              <img src="assets/ig-real-4.jpg" alt="Strands and Roses · brand moment" loading="lazy" />
               <div class="ig-feed__thumb-overlay" aria-hidden="true">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
               </div>
@@ -3221,9 +3226,7 @@
               <div>
                 <p class="location__detail-label">Hours</p>
                 <p class="location__detail-value">
-                  Sun 9am–5pm · Mon 4–8pm · Tue 9am–5pm<br>
-                  Wed–Thu Closed · Fri 2–8pm · Sat 3–7pm
-                </p>
+                  Sun 9am–6pm · Mon 2–8pm · Tue Closed · Wed Closed · Thu 2–8pm · Fri 2–8pm · Sat Closed</p>
               </div>
             </div>
 
