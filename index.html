@@ -647,7 +647,7 @@
       inset: 0;
       background-image: url('assets/hero-beauty.jpg');
       background-size: cover;
-      background-position: center;
+      background-position: 50% 20%;
       transform: scale(1.04);
       transition: transform 8s var(--ease-out);
       will-change: transform;
@@ -2301,6 +2301,18 @@
       }
       input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"] {
         cursor: none !important;
+      }
+    }
+
+    /* v5.2.4 · CODE FIX hero photo crop · preservar cara Angel tablet/desktop landscape */
+    @media (min-width: 768px) {
+      .hero__bg {
+        background-position: 50% 15% !important;
+      }
+    }
+    @media (min-width: 1200px) {
+      .hero__bg {
+        background-position: 50% 12% !important;
       }
     }
 </style>
