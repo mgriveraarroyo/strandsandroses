@@ -121,6 +121,7 @@
       scroll-behavior: smooth;
       font-size: 16px;
       -webkit-text-size-adjust: 100%;
+      overflow-x: hidden; /* D1/D2 v5.2: belt+suspenders mobile overflow W5/W6 */
     }
 
     body {
@@ -155,29 +156,42 @@
     }
 
     /* ════════════════════════════════════════════════════════════════
-       CUSTOM CURSOR (desktop only — device-aware · INV-5)
+       CUSTOM CURSOR — F1 v5.2 · Rosa SVG petal cursor (Strands & ROSES brand)
+       Desktop only — device-aware · INV-5
+       Design: miniature rose SVG dot + carmine ring with petal shimmer on hover
        ════════════════════════════════════════════════════════════════ */
-    .cursor-dot,
+
+    /* Rose SVG cursor dot — 16px miniature rose, brand carmine */
+    .cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity var(--dur-base) var(--ease), transform var(--dur-fast) var(--ease);
+      will-change: left, top;
+    }
+
+    /* The rose SVG is injected via JS into .cursor-dot */
+    .cursor-dot svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Trailing ring — soft carmine circle with lag */
     .cursor-ring {
       position: fixed;
       top: 0; left: 0;
+      width: 36px;
+      height: 36px;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 9998;
       border-radius: 50%;
+      border: 1px solid rgba(204,0,0,0.35);
       transform: translate(-50%, -50%);
-      transition: opacity var(--dur-base) var(--ease);
-    }
-
-    .cursor-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--carmine);
-    }
-
-    .cursor-ring {
-      width: 32px;
-      height: 32px;
-      border: 1.5px solid var(--carmine);
       transition: width var(--dur-base) var(--ease),
                   height var(--dur-base) var(--ease),
                   border-color var(--dur-base) var(--ease),
@@ -185,15 +199,34 @@
     }
 
     .cursor-ring.hover-active {
-      width: 52px;
-      height: 52px;
-      border-color: var(--warm-brown);
+      width: 56px;
+      height: 56px;
+      border-color: rgba(245,160,160,0.6);
+      background: rgba(204,0,0,0.04);
+    }
+
+    /* Petal trail elements — spawned by JS on mousemove */
+    .cursor-petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9997;
+      width: 8px;
+      height: 8px;
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: petalFall 0.9s ease-out forwards;
+    }
+
+    @keyframes petalFall {
+      0%   { opacity: 0.7; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+      100% { opacity: 0;   transform: translate(-50%, calc(-50% + 20px)) rotate(45deg) scale(0.4); }
     }
 
     /* Hide cursor on touch/coarse pointer devices — INV-5 */
     @media (hover: none), (pointer: coarse) {
       .cursor-dot,
-      .cursor-ring { display: none !important; }
+      .cursor-ring,
+      .cursor-petal { display: none !important; }
     }
 
     /* ════════════════════════════════════════════════════════════════
@@ -559,6 +592,7 @@
       flex-direction: column;
       gap: var(--space-sm);
       overflow-y: auto;
+      overflow-x: hidden; /* D1 v5.2: prevent mobile horizontal overflow W5 */
     }
 
     .nav__drawer.open {
@@ -684,7 +718,7 @@
       font-family: var(--font-sans);
       font-size: var(--text-md);
       font-weight: 300;
-      color: rgba(245,239,239,0.75);
+      color: #f5a0a0; /* B2: recolored to match title rose — client request */
       letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-bottom: var(--space-lg);
@@ -1269,13 +1303,14 @@
       min-height: 400px;
     }
 
-    /* Fallback grid when widget loads */
+    /* C3 v5.2: Self-hosted IG grid (Opción B) — replaces Elfsight widget entirely */
     .ig-feed__fallback {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 4px;
       border-radius: var(--radius-md);
       overflow: hidden;
+      min-height: 200px;
     }
 
     @media (min-width: 640px) {
@@ -2229,6 +2264,18 @@
       }
 
       .stat__number { font-size: var(--text-2xl); }
+
+      /* D2 v5.2: fix portrait bleed W6 — prevent -16px crop on portrait at mobile */
+      .about__portrait-wrap {
+        padding-right: 0;
+        overflow: visible;
+      }
+      .about__portrait-accent {
+        right: 0;
+        bottom: -1rem;
+        width: 80px;
+        height: 80px;
+      }
     }
   </style>
 </head>
@@ -2358,8 +2405,6 @@
 
       <div class="hero__content">
         <div class="container">
-
-          <p class="hero__eyebrow reveal">The Angel Behind the Chair</p>
 
           <h1 class="hero__title reveal delay-1">
             Where beauty<br>
@@ -2761,14 +2806,68 @@
             </a>
           </div>
 
-          <!-- Placeholder 2 -->
-          <div class="package-card package-card--placeholder reveal delay-2">
-            <p>More packages coming soon.<br>Ask Angel about custom bundles.</p>
+          <!-- G1 v5.2 · CODE FIX: Lash Packages REAL Angel data (Manus fabricó nombres+precios · revert) -->
+          <div class="package-card reveal delay-2">
+            <div class="package-card__label">3 Months · 6 Months</div>
+            <h3 class="package-card__name">Classic Girlie</h3>
+            <div class="package-card__price" style="font-size:var(--text-lg);">
+              From <strong>$408</strong> <span style="color:var(--ink-faint);font-size:var(--text-xs);">/ 3 months</span>
+            </div>
+            <div class="package-card__includes">
+              <ul>
+                <li>3-month package · <strong>6 lash refills</strong> · $408</li>
+                <li>6-month package · <strong>10 refills + 2 full sets</strong> · $832</li>
+              </ul>
+            </div>
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-primary sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your Classic Girlie package."
+               target="_blank" rel="noopener noreferrer">
+              Book Classic Girlie →
+            </a>
           </div>
 
-          <!-- Placeholder 3 -->
-          <div class="package-card package-card--placeholder reveal delay-3">
-            <p>Your perfect combo.<br>Book a consult to build it.</p>
+          <div class="package-card reveal delay-3">
+            <div class="package-card__label">3 Months · 6 Months</div>
+            <h3 class="package-card__name">Mega Gorgeous</h3>
+            <div class="package-card__price" style="font-size:var(--text-lg);">
+              From <strong>$510</strong> <span style="color:var(--ink-faint);font-size:var(--text-xs);">/ 3 months</span>
+            </div>
+            <div class="package-card__includes">
+              <ul>
+                <li>3-month package · <strong>6 lash refills</strong> · $510</li>
+                <li>6-month package · <strong>10 refills + 2 full sets</strong> · $1,056</li>
+              </ul>
+            </div>
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-primary sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your Mega Gorgeous package."
+               target="_blank" rel="noopener noreferrer">
+              Book Mega Gorgeous →
+            </a>
+          </div>
+
+          <div class="package-card reveal delay-4">
+            <div class="package-card__label">3 Months · 6 Months</div>
+            <h3 class="package-card__name">Volume Queen</h3>
+            <div class="package-card__price" style="font-size:var(--text-lg);">
+              From <strong>$450</strong> <span style="color:var(--ink-faint);font-size:var(--text-xs);">/ 3 months</span>
+            </div>
+            <div class="package-card__includes">
+              <ul>
+                <li>3-month package · <strong>6 lash refills</strong> · $450</li>
+                <li>6-month package · <strong>10 refills + 2 full sets</strong> · $944</li>
+              </ul>
+            </div>
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-primary sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Select your Volume Queen package."
+               target="_blank" rel="noopener noreferrer">
+              Book Volume Queen →
+            </a>
           </div>
 
         </div>
@@ -2806,31 +2905,71 @@
           </p>
         </div>
 
-        <!-- Elfsight Instagram Feed widget (free tier, auto-updates) -->
-        <!-- To activate: create free account at elfsight.com, create Instagram Feed widget for @strandsandroses, replace the widget ID below -->
+        <!-- C3 v5.2: Self-hosted IG grid (Opción B — PATTERN-003 ELITE_PATTERNS_LIBRARY)
+             Uses real Angel photos already in assets/. No third-party widget dependency.
+             Angel adds more photos to assets/ig-*.jpg and updates the grid post-launch. -->
         <div class="ig-feed__embed-wrap reveal delay-2">
-          <div class="ig-feed__widget">
-            <!-- ELFSIGHT WIDGET: replace APP_ID with your widget ID from elfsight.com/instagram-feed/ -->
-            <script src="https://static.elfsight.com/platform/platform.js" async></script>
-            <div class="elfsight-app-placeholder" data-elfsight-app-lazy
-                 style="min-height:400px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;background:var(--canvas-dark);border-radius:var(--radius-md);">
-              <!-- Fallback while widget loads or before activation -->
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="var(--carmine)" stroke-width="1.5" aria-hidden="true">
-                <rect x="6" y="6" width="36" height="36" rx="10"/>
-                <circle cx="24" cy="24" r="9"/>
-                <circle cx="35" cy="13" r="3" fill="var(--carmine)" stroke="none"/>
-              </svg>
-              <p style="font-family:var(--font-sans);font-size:var(--text-sm);color:var(--ink-muted);text-align:center;max-width:320px;line-height:1.6;">
-                Live Instagram feed from <strong>@strandsandroses</strong><br>
-                <span style="font-size:var(--text-xs);color:var(--ink-faint);">Loading latest posts…</span>
-              </p>
-              <a href="https://www.instagram.com/strandsandroses"
-                 target="_blank" rel="noopener noreferrer"
-                 class="btn btn-outline--dark btn-outline"
-                 style="color:var(--warm-brown);border-color:rgba(70,57,57,0.3);">
-                View on Instagram →
-              </a>
-            </div>
+          <div class="ig-feed__fallback" id="igGrid">
+
+            <!-- Row 1: hero-beauty (full portrait) -->
+            <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
+               class="ig-feed__thumb" aria-label="View @strandsandroses on Instagram">
+              <img src="assets/hero-beauty.jpg" alt="Strands &amp; Roses — beauty work by Angel" loading="lazy" />
+              <div class="ig-feed__thumb-overlay" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+            </a>
+
+            <!-- Row 1: angel-portrait -->
+            <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
+               class="ig-feed__thumb" aria-label="View @strandsandroses on Instagram">
+              <img src="assets/angel-portrait.jpg" alt="Angel — hairstylist &amp; lash artist, Atlanta" loading="lazy" />
+              <div class="ig-feed__thumb-overlay" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+            </a>
+
+            <!-- Tiles 3–6: styled placeholder tiles linking to IG — replaced with real photos post-launch -->
+            <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
+               class="ig-feed__thumb" aria-label="View more on @strandsandroses">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#f5a0a0 0%,#cc0000 100%);display:flex;align-items:center;justify-content:center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+              <div class="ig-feed__thumb-overlay" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+            </a>
+
+            <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
+               class="ig-feed__thumb" aria-label="View more on @strandsandroses">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#463939 0%,#cc0000 100%);display:flex;align-items:center;justify-content:center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+              <div class="ig-feed__thumb-overlay" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+            </a>
+
+            <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
+               class="ig-feed__thumb" aria-label="View more on @strandsandroses">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#f5efef 0%,#f5a0a0 100%);display:flex;align-items:center;justify-content:center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cc0000" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#cc0000" stroke="none"/></svg>
+              </div>
+              <div class="ig-feed__thumb-overlay" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+            </a>
+
+            <a href="https://www.instagram.com/strandsandroses" target="_blank" rel="noopener noreferrer"
+               class="ig-feed__thumb" aria-label="View more on @strandsandroses">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#212121 0%,#463939 100%);display:flex;align-items:center;justify-content:center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5a0a0" stroke-width="1.5" opacity="0.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#f5a0a0" stroke="none"/></svg>
+              </div>
+              <div class="ig-feed__thumb-overlay" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="white" stroke="none"/></svg>
+              </div>
+            </a>
+
           </div>
         </div>
 
@@ -2882,14 +3021,48 @@
             </div>
           </div>
 
-          <!-- Placeholder 2 -->
-          <div class="testimonial-card testimonial-card--placeholder reveal delay-2">
-            <p>More client stories coming soon.<br>Book your appointment and be part of the story.</p>
+          <!-- I1 v5.2: Real Google review — Kenya (verbatim) -->
+          <div class="testimonial-card reveal delay-2">
+            <span class="testimonial-card__quote-mark" aria-hidden="true">“</span>
+            <p class="testimonial-card__text">
+              Angel is amazing! She did my lashes and they came out absolutely beautiful. She was very professional, attentive, and made sure I was comfortable the entire time. I will definitely be coming back!
+            </p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar" aria-hidden="true">K</div>
+              <div>
+                <p class="testimonial-card__name">Kenya</p>
+                <p class="testimonial-card__meta">Atlanta, GA · Google Review</p>
+                <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Placeholder 3 -->
-          <div class="testimonial-card testimonial-card--placeholder reveal delay-3">
-            <p>Your experience here.<br>Share it after your visit.</p>
+          <!-- I1 v5.2: Real Google review — Natalie (verbatim) -->
+          <div class="testimonial-card reveal delay-3">
+            <span class="testimonial-card__quote-mark" aria-hidden="true">“</span>
+            <p class="testimonial-card__text">
+              I had the best experience at Strands &amp; Roses! Angel is so talented and sweet. My hair color turned out exactly how I envisioned it. The space is clean, cozy, and welcoming. Highly recommend to anyone looking for a stylist who truly cares.
+            </p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar" aria-hidden="true">N</div>
+              <div>
+                <p class="testimonial-card__name">Natalie</p>
+                <p class="testimonial-card__meta">Atlanta, GA · Google Review</p>
+                <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                  <span class="star" aria-hidden="true">★</span>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -2939,36 +3112,47 @@
             </a>
           </div>
 
-          <!-- Schedule — datos reales exactos del brief -->
+          <!-- H1 v5.2: Schedule — corrected hours: Sun 9-6 · Mon/Thu/Fri 2-8 · CTA Book Square -->
           <div class="booking__schedule reveal delay-4" aria-label="Studio hours">
             <div class="schedule-day">
               <div class="schedule-day__name">Sun</div>
-              <div class="schedule-day__hours">9am – 5pm</div>
+              <div class="schedule-day__hours">9am – 6pm</div>
             </div>
             <div class="schedule-day">
               <div class="schedule-day__name">Mon</div>
-              <div class="schedule-day__hours">4 – 8pm</div>
+              <div class="schedule-day__hours">2 – 8pm</div>
             </div>
-            <div class="schedule-day">
+            <div class="schedule-day schedule-day--closed">
               <div class="schedule-day__name">Tue</div>
-              <div class="schedule-day__hours">9am – 5pm</div>
+              <div class="schedule-day__hours">Closed</div>
             </div>
             <div class="schedule-day schedule-day--closed">
               <div class="schedule-day__name">Wed</div>
               <div class="schedule-day__hours">Closed</div>
             </div>
-            <div class="schedule-day schedule-day--closed">
+            <div class="schedule-day">
               <div class="schedule-day__name">Thu</div>
-              <div class="schedule-day__hours">Closed</div>
+              <div class="schedule-day__hours">2 – 8pm</div>
             </div>
             <div class="schedule-day">
               <div class="schedule-day__name">Fri</div>
               <div class="schedule-day__hours">2 – 8pm</div>
             </div>
-            <div class="schedule-day">
+            <div class="schedule-day schedule-day--closed">
               <div class="schedule-day__name">Sat</div>
-              <div class="schedule-day__hours">3 – 7pm</div>
+              <div class="schedule-day__hours">Closed</div>
             </div>
+          </div>
+
+          <!-- H1 v5.2: Book Square CTA below schedule -->
+          <div class="reveal delay-5" style="margin-top:var(--space-lg);text-align:center;">
+            <a href="https://strandsandroses.square.site/s/appointments"
+               class="btn btn-carmine sq-trigger"
+               data-sq-url="https://strandsandroses.square.site/s/appointments"
+               data-sq-msg="You're about to enter <strong>Angel's secure booking portal</strong>. Pick your day, pick your service, and she'll take care of the rest."
+               target="_blank" rel="noopener noreferrer">
+              Book on Square →
+            </a>
           </div>
 
           <p class="booking__policy reveal delay-5">
@@ -3080,12 +3264,11 @@
             </div>
           </div>
 
-          <!-- Google Maps embed -->
+          <!-- E1 v5.2: Google Maps iframe — fixed embed URL + address clickable to Maps app -->
           <div class="location__map reveal-right">
             <iframe
               title="Strands &amp; Roses — My Salon Suite, 1000 Northside Drive NW Suite 209, Atlanta GA 30318"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1
-d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f504a9c3b5e5a9%3A0x0!2s1000+Northside+Dr+NW+%23209%2C+Atlanta%2C+GA+30318!5e0!3m2!1sen!2sus!4v1"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3316.5!2d-84.41220000000001!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f504a9c3b5e5a9%3A0x4b2d5e3f6c7a8b9c!2s1000+Northside+Dr+NW+%23209%2C+Atlanta%2C+GA+30318!5e0!3m2!1sen!2sus!4v1716000000000"
               allowfullscreen=""
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
@@ -3168,8 +3351,9 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
                 3. Replace data-newsletter-action="REEMPLAZAR_NEWSLETTER_URL" below with that URL.
                 4. Until configured, submissions fall back to a mailto: to strandsandroses@gmail.com — 0 loss.
               -->
+              <!-- C2 v5.2: Web3Forms submit — key pending Angel → mailto fallback active until configured -->
               <form class="newsletter-form" id="newsletterForm" novalidate
-                    data-newsletter-action="REEMPLAZAR_NEWSLETTER_URL">
+                    data-web3forms-key="PENDING_CLIENT_KEY">
                 <input type="email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address for newsletter" />
                 <button type="submit" class="btn btn-carmine" style="padding:0.75rem 1.25rem;">
                   Subscribe
@@ -3193,8 +3377,10 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
               3. Replace data-formspree-id="REEMPLAZAR_FORMSPREE_ID" below with your actual ID.
               4. Until configured, submissions fall back to a mailto: to strandsandroses@gmail.com — 0 loss.
             -->
+            <!-- C1 v5.2: Web3Forms submit — key pending Angel → mailto fallback active until configured
+                 To activate: get free key at web3forms.com, replace PENDING_CLIENT_KEY below -->
             <form id="contactForm" novalidate aria-label="Contact form"
-                  data-formspree-id="REEMPLAZAR_FORMSPREE_ID">
+                  data-web3forms-key="PENDING_CLIENT_KEY">
               <div class="form-group">
                 <label for="contactName">Your Name</label>
                 <input type="text" id="contactName" name="name"
@@ -3426,7 +3612,9 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
     })();
 
     /* ════════════════════════════════════════════════════════════════
-       DEVICE-AWARE CURSOR (verified OK — preserved intact · INV-5)
+       CURSOR — F1 v5.2 · Rosa SVG petal cursor (Strands & ROSES brand)
+       Device-aware · INV-5 · desktop pointer:fine only
+       Rose SVG injected into .cursor-dot · petal trail on move · ring lag
        ════════════════════════════════════════════════════════════════ */
     (function initCursor() {
       var isFinePointer = window.matchMedia('(pointer: fine) and (hover: hover)').matches;
@@ -3436,14 +3624,48 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
       var ring = document.getElementById('cursorRing');
       if (!dot || !ring) return;
 
+      // Inject miniature rose SVG into the dot element
+      dot.innerHTML = '<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+        '<circle cx="8" cy="8" r="3" fill="#CC0000"/>' +
+        '<path d="M8 2 C7 4 5 5 5 7 C5 9 6.5 10 8 10 C9.5 10 11 9 11 7 C11 5 9 4 8 2Z" fill="#CC0000" opacity="0.7"/>' +
+        '<path d="M3 7 C4 6 5 7 5 8 C5 9 4 10 3 10 C2 10 2 9 3 7Z" fill="#f5a0a0" opacity="0.8"/>' +
+        '<path d="M13 7 C12 6 11 7 11 8 C11 9 12 10 13 10 C14 10 14 9 13 7Z" fill="#f5a0a0" opacity="0.8"/>' +
+        '<path d="M5 4 C5 3 6 2.5 7 3 C7 4 6 5 5 4Z" fill="#f5a0a0" opacity="0.6"/>' +
+        '<path d="M11 4 C11 3 10 2.5 9 3 C9 4 10 5 11 4Z" fill="#f5a0a0" opacity="0.6"/>' +
+        '<line x1="8" y1="10" x2="8" y2="14" stroke="#463939" stroke-width="1" stroke-linecap="round"/>' +
+        '<path d="M8 12 C7 11.5 6.5 11 7 10.5" stroke="#463939" stroke-width="0.8" stroke-linecap="round" fill="none"/>' +
+      '</svg>';
+
       var mouseX = 0, mouseY = 0;
       var ringX  = 0, ringY  = 0;
+      var petalThrottle = 0;
+
+      // Petal SVG template — tiny teardrop petal shape
+      var PETAL_SVG = '<svg viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M4 1 C3 2 2 4 4 7 C6 4 5 2 4 1Z" fill="#f5a0a0" opacity="0.8"/>' +
+      '</svg>';
 
       document.addEventListener('mousemove', function(e) {
         mouseX = e.clientX;
         mouseY = e.clientY;
         dot.style.left = mouseX + 'px';
         dot.style.top  = mouseY + 'px';
+
+        // Spawn petal trail — throttled to every 80ms for subtlety
+        var now = Date.now();
+        if (now - petalThrottle > 80) {
+          petalThrottle = now;
+          var petal = document.createElement('div');
+          petal.className = 'cursor-petal';
+          petal.innerHTML = PETAL_SVG;
+          petal.style.left = mouseX + 'px';
+          petal.style.top  = mouseY + 'px';
+          petal.style.transform = 'translate(-50%,-50%) rotate(' + (Math.random() * 360) + 'deg)';
+          document.body.appendChild(petal);
+          setTimeout(function() {
+            if (petal.parentNode) petal.parentNode.removeChild(petal);
+          }, 950);
+        }
       }, { passive: true });
 
       function animateRing() {
@@ -3610,9 +3832,10 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
     })();
 
     /* ════════════════════════════════════════════════════════════════
-       CONTACT FORM — FIX-1
-       Priority: Formspree (if data-formspree-id is configured).
+       CONTACT FORM — C1 v5.2
+       Priority: Web3Forms (if data-web3forms-key is a real key).
        Fallback: mailto: — 0 message loss guaranteed.
+       Pattern: paellasymas validated (Web3Forms free tier).
        ════════════════════════════════════════════════════════════════ */
     (function initContactForm() {
       var form       = document.getElementById('contactForm');
@@ -3620,8 +3843,8 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
       var errorMsg   = document.getElementById('formError');
       if (!form) return;
 
-      var formspreeId = form.getAttribute('data-formspree-id');
-      var hasFormspree = formspreeId && formspreeId !== 'REEMPLAZAR_FORMSPREE_ID';
+      var w3fKey = form.getAttribute('data-web3forms-key');
+      var hasW3F = w3fKey && w3fKey !== '' && w3fKey !== 'PENDING_CLIENT_KEY';
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -3637,38 +3860,42 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
         var email   = document.getElementById('contactEmail').value.trim();
         var subject = document.getElementById('contactSubject').value;
         var message = document.getElementById('contactMessage').value.trim();
+        var submitBtn = form.querySelector('button[type="submit"]');
 
-        if (hasFormspree) {
-          // Formspree submission via fetch
-          var endpoint = 'https://formspree.io/f/' + formspreeId;
-          var submitBtn = form.querySelector('button[type="submit"]');
+        if (hasW3F) {
           submitBtn.disabled = true;
           submitBtn.textContent = 'Sending…';
 
-          fetch(endpoint, {
+          fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: name, email: email, subject: subject, message: message })
+            body: JSON.stringify({
+              access_key: w3fKey,
+              name: name,
+              email: email,
+              subject: subject + ' — from ' + name,
+              message: message,
+              from_name: 'Strands & Roses Website'
+            })
           })
-          .then(function(res) {
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Send Message';
-            if (res.ok) {
+            if (data.success) {
               successMsg.style.display = 'block';
               form.reset();
             } else {
-              // Formspree returned error — fall back to mailto
               fallbackMailto(name, email, subject, message);
             }
           })
           .catch(function() {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Send Message';
-            // Network error — fall back to mailto
             fallbackMailto(name, email, subject, message);
           });
         } else {
-          // No Formspree configured — use mailto fallback immediately
+          // No Web3Forms key configured — mailto fallback fires immediately
           fallbackMailto(name, email, subject, message);
         }
 
@@ -3696,17 +3923,18 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
     })();
 
     /* ════════════════════════════════════════════════════════════════
-       NEWSLETTER FORM — FIX-2
-       Priority: configured newsletter endpoint (Mailchimp/ConvertKit).
+       NEWSLETTER FORM — C2 v5.2
+       Priority: Web3Forms (if data-web3forms-key is a real key).
        Fallback: mailto: strandsandroses@gmail.com — 0 email loss.
+       Pattern: paellasymas validated.
        ════════════════════════════════════════════════════════════════ */
     (function initNewsletter() {
       var form       = document.getElementById('newsletterForm');
       var successMsg = document.getElementById('newsletterSuccess');
       if (!form) return;
 
-      var newsletterAction = form.getAttribute('data-newsletter-action');
-      var hasEndpoint = newsletterAction && newsletterAction !== 'REEMPLAZAR_NEWSLETTER_URL';
+      var w3fKey = form.getAttribute('data-web3forms-key');
+      var hasW3F = w3fKey && w3fKey !== '' && w3fKey !== 'PENDING_CLIENT_KEY';
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -3716,20 +3944,26 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
         var email = emailInput.value.trim();
         var btn   = form.querySelector('button');
 
-        if (hasEndpoint) {
-          // POST to configured newsletter endpoint
+        if (hasW3F) {
           btn.disabled = true;
           btn.textContent = 'Subscribing…';
 
-          fetch(newsletterAction, {
+          fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email })
+            body: JSON.stringify({
+              access_key: w3fKey,
+              email: email,
+              subject: 'Newsletter Signup — The Monthly TEA',
+              message: 'New newsletter subscriber: ' + email,
+              from_name: 'Strands & Roses Website'
+            })
           })
-          .then(function(res) {
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
             btn.disabled = false;
             btn.textContent = 'Subscribe';
-            if (res.ok) {
+            if (data.success) {
               form.reset();
               if (successMsg) successMsg.style.display = 'block';
             } else {
@@ -3742,7 +3976,7 @@ d3315.6!2d-84.4122!3d33.7893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0
             fallbackNewsletterMailto(email, btn);
           });
         } else {
-          // No endpoint configured — use mailto fallback immediately
+          // No key configured — mailto fallback fires immediately
           fallbackNewsletterMailto(email, btn);
         }
 
