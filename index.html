@@ -2306,6 +2306,10 @@
       .btn { padding: 14px 18px !important; font-size: 0.78rem !important; letter-spacing: 0.08em !important; min-height: 44px; }
       .btn-primary, .btn-outline, .btn-carmine { min-height: 44px; }
 
+      /* Fix #2 v5.4.2 · QA Chrome 2026-05-22 reportó shortfall 86px persistente · texto necesita ~197px en ~111px disponible */
+      /* Solución: permitir wrap multilinea preservando legibilidad · botones se vuelven 2 líneas en mobile · 0 clip */
+      .btn { white-space: normal !important; text-align: center !important; line-height: 1.25 !important; }
+
       /* Touch targets WCAG 2.5.5 · 44×44 mínimo */
       .nav__drawer-cta { min-height: 44px; padding: 14px 20px !important; }
       .newsletter-form button[type="submit"] { min-height: 44px !important; padding: 0.85rem 1.25rem !important; }
