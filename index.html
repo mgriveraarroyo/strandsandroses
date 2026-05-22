@@ -2298,7 +2298,11 @@
       /* Hero subtitle · permitir wrap completo (los &nbsp; ya removidos) */
       .hero__subtitle { overflow-wrap: break-word; word-break: normal; white-space: normal; }
 
-      /* Package CTAs · reducir padding para que el label "Book X →" no se clipee a 320px */
+      /* Package card · reducir padding interior (root cause real Fix #2 v5.4.1 Chrome revalidación) */
+      /* QA Chrome confirmó: el .btn padding NO era el constraint · el .package-card padding sí */
+      .package-card { padding: 20px !important; }
+
+      /* Package CTAs · refuerzo padding/font scaling para safety */
       .btn { padding: 14px 18px !important; font-size: 0.78rem !important; letter-spacing: 0.08em !important; min-height: 44px; }
       .btn-primary, .btn-outline, .btn-carmine { min-height: 44px; }
 
