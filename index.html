@@ -547,8 +547,12 @@
     .nav__hamburger {
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       gap: 5px;
       padding: 6px;
+      min-width: 44px;
+      min-height: 44px;
       cursor: pointer;
     }
 
@@ -1998,7 +2002,7 @@
     .sq-popup__close {
       position: absolute;
       top: 1rem; right: 1rem;
-      width: 32px; height: 32px;
+      width: 44px; height: 44px;
       border-radius: 50%;
       background: rgba(70,57,57,0.1);
       display: flex; align-items: center; justify-content: center;
@@ -2281,14 +2285,26 @@
     /* CODE FIX v5.2.1 · D1 overflow 320px responsive */
     @media (max-width: 480px) {
       html, body { overflow-x: hidden !important; }
-      .hero, .about, .services, .booking, .gallery, section { 
-        max-width: 100vw !important; 
-        overflow-x: hidden !important; 
+      .hero, .about, .services, .booking, .gallery, section {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
       }
       .hero__title { font-size: clamp(2rem, 8vw, 4rem) !important; word-wrap: break-word; }
       .hero__content { padding-left: 1rem !important; padding-right: 1rem !important; }
       * { max-width: 100% !important; }
       img { width: auto; max-width: 100%; height: auto; }
+
+      /* v5.4 · Mobile fixes Chrome QA 2026-05-22 */
+      /* Hero subtitle · permitir wrap completo (los &nbsp; ya removidos) */
+      .hero__subtitle { overflow-wrap: break-word; word-break: normal; white-space: normal; }
+
+      /* Package CTAs · reducir padding para que el label "Book X →" no se clipee a 320px */
+      .btn { padding: 14px 18px !important; font-size: 0.78rem !important; letter-spacing: 0.08em !important; min-height: 44px; }
+      .btn-primary, .btn-outline, .btn-carmine { min-height: 44px; }
+
+      /* Touch targets WCAG 2.5.5 · 44×44 mínimo */
+      .nav__drawer-cta { min-height: 44px; padding: 14px 20px !important; }
+      .newsletter-form button[type="submit"] { min-height: 44px !important; padding: 0.85rem 1.25rem !important; }
     }
 
     /* v5.2.3 · CODE FIX cursor visibility · ocultar cursor nativo desktop con custom rose · preservar caret texto en inputs */
@@ -2451,7 +2467,7 @@
           </h1>
 
           <p class="hero__subtitle reveal delay-2">
-            Hair&nbsp;·&nbsp;Lash&nbsp;·&nbsp;Gender&nbsp;Neutral&nbsp;—&nbsp;Atlanta,&nbsp;GA
+            Hair · Lash · Gender&nbsp;Neutral — Atlanta,&nbsp;GA
           </p>
 
           <p class="hero__tagline reveal delay-3">
