@@ -41,17 +41,17 @@
   <style>
     /* ════════════════════════════════════════════════════════════════
        DESIGN TOKENS — Strands & Roses · Angel v5
-       Branding: #F5EFEF · #463939 · #212121 · carmine #B91D47 (soft pink-ish red · Angel feedback 2026-05-22) · Fraunces + Poppins
+       Branding: #F5EFEF · #463939 · #212121 · carmine #E3779B (rose pink medium · Angel feedback 2026-05-22 PM verde-circle target accent unificado) · Fraunces + Poppins
        ════════════════════════════════════════════════════════════════ */
     :root {
       /* Brand palette — real client branding */
       --canvas:       #F5EFEF;   /* rosa pálido — fondo real del cliente */
       --ink:          #0A0A0A;   /* charcoal editorial */
-      --carmine:      #B91D47;   /* soft pink-ish red · Angel feedback 2026-05-22 (fue #CC0000) · WCAG AA 5.55:1 sobre canvas */
+      --carmine:      #E3779B;   /* rose pink medium · Angel feedback 2026-05-22 PM (verde-circle target · fue #B91D47 deep · ahora unificado al tone que cliente pidió "find a pink like the one circled in green and make that the accent color") */
       --warm-brown:   #463939;   /* marrón cálido — headings reales */
       --body-dark:    #212121;   /* cuerpo real */
-      --carmine-light:#D4305A;   /* fue #E53333 · escalado coherente con --carmine #B91D47 */
-      --carmine-dim:  #8C1236;   /* fue #990000 · escalado coherente con --carmine #B91D47 */
+      --carmine-light:#ED9AB6;   /* escalado coherente con --carmine #E3779B · cliente Angel target 2026-05-22 PM */
+      --carmine-dim:  #B85577;   /* escalado coherente con --carmine #E3779B · cliente Angel target 2026-05-22 PM */
       --warm-light:   #5C4A4A;
       --canvas-dark:  #EDE5E5;
       --canvas-mid:   #F0E8E8;
@@ -286,7 +286,7 @@
     }
 
     .section-title--light { color: var(--canvas); }
-    .section-title--light em { color: #f5a0a0; }
+    .section-title--light em { color: #E3779B; }
 
     .section-lead {
       font-family: var(--font-sans);
@@ -496,7 +496,7 @@
       font-family: var(--font-sans);
       font-size: var(--text-xs);
       font-weight: 400;
-      color: #f5a0a0;
+      color: #E3779B;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       margin-top: 2px;
@@ -698,7 +698,7 @@
       font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: #f5a0a0;
+      color: #E3779B;
       margin-bottom: var(--space-md);
     }
 
@@ -715,14 +715,14 @@
 
     .hero__title em {
       font-style: italic;
-      color: #f5a0a0;
+      color: #E3779B;
     }
 
     .hero__subtitle {
       font-family: var(--font-sans);
       font-size: var(--text-md);
       font-weight: 300;
-      color: #f5a0a0; /* B2: recolored to match title rose — client request */
+      color: #E3779B; /* B2: recolored to match title rose — client request */
       letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-bottom: var(--space-lg);
@@ -857,7 +857,7 @@
     }
 
     .about__portrait-tag strong {
-      color: #f5a0a0;
+      color: #E3779B;
     }
 
     .about__text blockquote {
@@ -1543,7 +1543,7 @@
 
     .booking__title em {
       font-style: italic;
-      color: #f5a0a0;
+      color: #E3779B;
     }
 
     .booking__sub {
@@ -1598,7 +1598,7 @@
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #f5a0a0;
+      color: #E3779B;
       margin-bottom: 0.25rem;
     }
 
@@ -2169,7 +2169,7 @@
       font-size: var(--text-xs);
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #f5a0a0;
+      color: #E3779B;
       margin-bottom: var(--space-md);
     }
 
@@ -2196,7 +2196,7 @@
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #f5a0a0;
+      color: #E3779B;
       margin-bottom: var(--space-md);
     }
 
@@ -2805,7 +2805,7 @@
           <!-- FREE CONSULTATION — full-width accent card -->
           <div class="service-card service-card--consult reveal delay-5">
             <div>
-              <div class="service-card__category" style="color:#f5a0a0;">Complimentary</div>
+              <div class="service-card__category" style="color:#E3779B;">Complimentary</div>
               <h3 class="service-card__title" style="color:var(--canvas);">Free Consultation</h3>
               <p style="font-family:var(--font-sans);font-size:var(--text-sm);color:rgba(245,239,239,0.65);max-width:420px;line-height:1.7;">
                 30 minutes · Let's talk about your hair goals, color vision, or lash look before committing to anything. No pressure, just conversation.
@@ -3092,7 +3092,7 @@
                class="btn btn-outline sq-trigger"
                data-sq-url="https://app.squareup.com/gift/ML3KDM6ERD75W/order"
                data-sq-msg="You're about to enter <strong>Angel's secure gift card portal</strong>. Purchase a gift card and you'll be brought right back here."
-               style="border-color:rgba(185,29,71,0.4);color:#f5a0a0;"
+               style="border-color:rgba(185,29,71,0.4);color:#E3779B;"
                target="_blank" rel="noopener noreferrer">
               Gift Cards →
             </a>
@@ -3612,10 +3612,10 @@
       dot.innerHTML = '<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
         '<circle cx="8" cy="8" r="3" fill="#B91D47"/>' +
         '<path d="M8 2 C7 4 5 5 5 7 C5 9 6.5 10 8 10 C9.5 10 11 9 11 7 C11 5 9 4 8 2Z" fill="#B91D47" opacity="0.7"/>' +
-        '<path d="M3 7 C4 6 5 7 5 8 C5 9 4 10 3 10 C2 10 2 9 3 7Z" fill="#f5a0a0" opacity="0.8"/>' +
-        '<path d="M13 7 C12 6 11 7 11 8 C11 9 12 10 13 10 C14 10 14 9 13 7Z" fill="#f5a0a0" opacity="0.8"/>' +
-        '<path d="M5 4 C5 3 6 2.5 7 3 C7 4 6 5 5 4Z" fill="#f5a0a0" opacity="0.6"/>' +
-        '<path d="M11 4 C11 3 10 2.5 9 3 C9 4 10 5 11 4Z" fill="#f5a0a0" opacity="0.6"/>' +
+        '<path d="M3 7 C4 6 5 7 5 8 C5 9 4 10 3 10 C2 10 2 9 3 7Z" fill="#E3779B" opacity="0.8"/>' +
+        '<path d="M13 7 C12 6 11 7 11 8 C11 9 12 10 13 10 C14 10 14 9 13 7Z" fill="#E3779B" opacity="0.8"/>' +
+        '<path d="M5 4 C5 3 6 2.5 7 3 C7 4 6 5 5 4Z" fill="#E3779B" opacity="0.6"/>' +
+        '<path d="M11 4 C11 3 10 2.5 9 3 C9 4 10 5 11 4Z" fill="#E3779B" opacity="0.6"/>' +
         '<line x1="8" y1="10" x2="8" y2="14" stroke="#463939" stroke-width="1" stroke-linecap="round"/>' +
         '<path d="M8 12 C7 11.5 6.5 11 7 10.5" stroke="#463939" stroke-width="0.8" stroke-linecap="round" fill="none"/>' +
       '</svg>';
@@ -3626,7 +3626,7 @@
 
       // Petal SVG template — tiny teardrop petal shape
       var PETAL_SVG = '<svg viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<path d="M4 1 C3 2 2 4 4 7 C6 4 5 2 4 1Z" fill="#f5a0a0" opacity="0.8"/>' +
+        '<path d="M4 1 C3 2 2 4 4 7 C6 4 5 2 4 1Z" fill="#E3779B" opacity="0.8"/>' +
       '</svg>';
 
       document.addEventListener('mousemove', function(e) {
