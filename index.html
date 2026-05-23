@@ -2315,6 +2315,10 @@
       .newsletter-form button[type="submit"] { min-height: 44px !important; padding: 0.85rem 1.25rem !important; }
     }
 
+    /* v5.5 · Touch targets WCAG 2.5.5 GLOBAL · fix Chrome QA 2026-05-22 PM cazado 41px en desktop (regla mobile no aplicaba) */
+    .newsletter-form button[type="submit"] { min-height: 44px; }
+    .nav__hamburger, .nav__hamburger.open { min-height: 44px !important; }
+
     /* v5.2.3 · CODE FIX cursor visibility · ocultar cursor nativo desktop con custom rose · preservar caret texto en inputs */
     @media (pointer: fine) and (hover: hover) {
       html, body, a, button, .btn, [role="button"] {
