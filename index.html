@@ -52,6 +52,7 @@
       --body-dark:    #212121;   /* cuerpo real */
       --carmine-light:#ED9AB6;   /* escalado coherente con --carmine #E3779B · cliente Angel target 2026-05-22 PM */
       --carmine-dim:  #B85577;   /* escalado coherente con --carmine #E3779B · cliente Angel target 2026-05-22 PM */
+      --carmine-text: #A04A6C;   /* WCAG AA contrast fix · eyebrow text · 5.01:1 on canvas · 4.59:1 on canvas-dark */
       --warm-light:   #5C4A4A;
       --canvas-dark:  #EDE5E5;
       --canvas-mid:   #F0E8E8;
@@ -263,7 +264,7 @@
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--carmine);
+      color: var(--carmine-text); /* WCAG AA contrast fix · 2.50:1 → 5.01:1 */
       margin-bottom: var(--space-sm);
     }
 
@@ -358,14 +359,14 @@
     }
 
     .btn-carmine {
-      background: var(--carmine);
+      background: var(--carmine-dim); /* WCAG AA contrast fix · white on #B85577 = 4.56:1 · was var(--carmine) 2.85:1 */
       color: var(--white);
-      box-shadow: 0 4px 20px rgba(185,29,71,0.35);
+      box-shadow: 0 4px 20px rgba(184,85,119,0.35);
     }
 
     .btn-carmine:hover {
-      background: var(--carmine-light);
-      box-shadow: 0 6px 28px rgba(185,29,71,0.5);
+      background: #9D3F5E; /* hover darker · white on #9D3F5E = 6.35:1 */
+      box-shadow: 0 6px 28px rgba(157,63,94,0.5);
       transform: translateY(-1px);
     }
 
@@ -698,7 +699,7 @@
       font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: #E3779B;
+      color: var(--carmine-text); /* WCAG AA contrast fix · was #E3779B */
       margin-bottom: var(--space-md);
     }
 
@@ -2343,10 +2344,58 @@
         background-position: 50% 12% !important;
       }
     }
+
+    /* ════════════════════════════════════════════════════════════════
+       SKIP NAVIGATION LINK · WCAG 2.4.1
+       ════════════════════════════════════════════════════════════════ */
+    .skip-link {
+      position: absolute;
+      top: -48px;
+      left: 0;
+      background: var(--ink);
+      color: var(--white);
+      padding: 10px 18px;
+      z-index: 10000;
+      text-decoration: none;
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border-radius: 0 0 8px 0;
+      transition: top 0.15s ease;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       KEYBOARD FOCUS INDICATOR · WCAG 2.4.7
+       ════════════════════════════════════════════════════════════════ */
+    *:focus-visible {
+      outline: 2px solid var(--carmine);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+    *:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       NAV SPACING · 1024px BREAKPOINT · WCAG cosmetic fix
+       ════════════════════════════════════════════════════════════════ */
+    @media (min-width: 1024px) and (max-width: 1199px) {
+      .nav__links {
+        gap: 1.5rem; /* WCAG cosmetic fix · tighten inter-link gap at narrow desktop */
+      }
+      .nav__inner > div {
+        margin-left: 1.25rem; /* WCAG cosmetic fix · ensure ≥12px gap between Contact and Book Now */
+      }
+    }
 </style>
 </head>
 
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ═══════════════════════════════════════════════════════════════
        THANK YOU PAGE (shown when ?thanks=booking|giftcard|bundle)
@@ -2458,7 +2507,7 @@
     </a>
   </div>
 
-  <main>
+  <main id="main">
 
     <!-- ═══════════════════════════════════════════════════════════════
          SECTION 1 · HERO
