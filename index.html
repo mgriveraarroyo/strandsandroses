@@ -32,6 +32,14 @@
   <meta name="twitter:description" content="Hair color, lash artistry &amp; gender-neutral cuts. Beauty for every body, identity &amp; size." />
   <meta name="twitter:image" content="https://mgriveraarroyo.github.io/strandsandroses/assets/hero-beauty.jpg" />
 
+  <!-- ═══ FAVICON · BUG #2 fix: favicon assets added ═══ -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/android-chrome-192x192.png">
+  <meta name="theme-color" content="#E3779B">
+
   <!-- ═══ PERFORMANCE: PRELOAD CRITICAL ASSETS ═══ -->
   <link rel="preload" as="image" href="assets/hero-beauty.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -2398,25 +2406,6 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ═══════════════════════════════════════════════════════════════
-       THANK YOU PAGE (shown when ?thanks=booking|giftcard|bundle)
-       ═══════════════════════════════════════════════════════════════ -->
-  <div class="thankyou-overlay" id="thankYouOverlay" role="dialog" aria-modal="true" aria-label="Booking confirmed">
-    <div class="thankyou__icon" aria-hidden="true">
-      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 18 14 26 30 10"/>
-      </svg>
-    </div>
-    <h2 class="thankyou__title" id="thankYouTitle">You're all set,<br><em>beautiful.</em></h2>
-    <p class="thankyou__sub" id="thankYouSub">
-      Angel will confirm your appointment shortly. Check your email for details — and get ready for your transformation.
-    </p>
-    <p class="thankyou__sig">Xoxo -A</p>
-    <a href="#hero" class="btn btn-primary" onclick="document.getElementById('thankYouOverlay').classList.remove('active');">
-      Back to Strands &amp; Roses
-    </a>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════════
        SQUARE BRANDED POPUP OVERLAY
        ═══════════════════════════════════════════════════════════════ -->
   <div class="sq-overlay" id="sqOverlay" role="dialog" aria-modal="true" aria-label="Secure booking portal">
@@ -4056,6 +4045,27 @@
     })();
 
   </script>
+
+
+  <!-- BUG #3 fix: thankyou-overlay moved to end-of-body for H1-first semantic order -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       THANK YOU PAGE (shown when ?thanks=booking|giftcard|bundle)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="thankyou-overlay" id="thankYouOverlay" role="dialog" aria-modal="true" aria-label="Booking confirmed">
+    <div class="thankyou__icon" aria-hidden="true">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 18 14 26 30 10"/>
+      </svg>
+    </div>
+    <h2 class="thankyou__title" id="thankYouTitle">You're all set,<br><em>beautiful.</em></h2>
+    <p class="thankyou__sub" id="thankYouSub">
+      Angel will confirm your appointment shortly. Check your email for details — and get ready for your transformation.
+    </p>
+    <p class="thankyou__sig">Xoxo -A</p>
+    <a href="#hero" class="btn btn-primary" onclick="document.getElementById('thankYouOverlay').classList.remove('active');">
+      Back to Strands &amp; Roses
+    </a>
+  </div>
 
 </body>
 </html>
