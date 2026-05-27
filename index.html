@@ -668,6 +668,20 @@
 
     .hero__bg.loaded { transform: scale(1); }
 
+    /* R3 · blur overlay yellow letters · client request 2026-05-24 · CSS only · NO image edit */
+    .hero__bg::before {
+      content: '';
+      position: absolute;
+      top: 12%;
+      left: 10%;
+      width: 72%;
+      height: 26%;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
     /* Cinematic gradient overlay */
     .hero__overlay {
       position: absolute;
@@ -734,18 +748,8 @@
       color: #E3779B; /* B2: recolored to match title rose — client request */
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: var(--space-lg);
+      margin-bottom: var(--space-xl); /* R1+R2 · tagline removed · spacing adjusted to CTAs · client request 2026-05-24 */
       white-space: nowrap;
-    }
-
-    .hero__tagline {
-      font-family: var(--font-serif);
-      font-size: var(--text-lg);
-      font-style: italic;
-      font-weight: 300;
-      color: rgba(245,239,239,0.65);
-      margin-bottom: var(--space-xl);
-      max-width: 520px;
     }
 
     .hero__actions {
@@ -2399,6 +2403,107 @@
         margin-left: 1.25rem; /* WCAG cosmetic fix · ensure ≥12px gap between Contact and Book Now */
       }
     }
+
+    /* ════════════════════════════════════════════════════════════════
+       R4 · New Client Pop-up · June 1-30 2026 · client request 2026-05-24
+       ════════════════════════════════════════════════════════════════ */
+    .popup {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--dur-base) var(--ease), visibility var(--dur-base) var(--ease);
+    }
+    .popup--hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .popup__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.6);
+    }
+
+    .popup__content {
+      position: relative;
+      background: var(--canvas);
+      max-width: 480px;
+      width: calc(100% - 2rem);
+      padding: 3rem 2rem 2.5rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+      z-index: 1;
+    }
+
+    .popup__close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: transparent;
+      border: 0;
+      padding: 0.75rem;
+      cursor: pointer;
+      color: var(--warm-brown);
+      transition: color var(--dur-fast) var(--ease);
+      line-height: 0;
+    }
+    .popup__close:hover,
+    .popup__close:focus-visible {
+      color: var(--carmine-text);
+    }
+
+    .popup__monogram {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--carmine-text);
+      margin-bottom: 1rem;
+      letter-spacing: 0.08em;
+    }
+
+    .popup__title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--warm-brown);
+      margin-bottom: 0.75rem;
+      font-weight: 400;
+    }
+
+    .popup__body {
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .popup__cta {
+      display: inline-block;
+      padding: 0.875rem 1.5rem;
+      background: var(--carmine-dim);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      transition: background var(--dur-fast) var(--ease);
+    }
+    .popup__cta:hover,
+    .popup__cta:focus-visible {
+      background: #9D3F5E;
+    }
+
+    .popup__media-slot { /* video swap slot · empty initially */ }
 </style>
 </head>
 
@@ -2518,10 +2623,6 @@
 
           <p class="hero__subtitle reveal delay-2">
             Hair · Lash · Gender&nbsp;Neutral — Atlanta,&nbsp;GA
-          </p>
-
-          <p class="hero__tagline reveal delay-3">
-            Where you can feel welcomed, appreciated and understood.
           </p>
 
           <div class="hero__actions reveal delay-4">
@@ -4066,6 +4167,76 @@
       Back to Strands &amp; Roses
     </a>
   </div>
+
+  <!-- R4 · New Client Pop-up · June 1-30 2026 launch window · client request 2026-05-24 -->
+  <div id="newClientPopup" class="popup popup--hidden" role="dialog" aria-labelledby="popupTitle" aria-modal="true">
+    <div class="popup__backdrop" aria-hidden="true"></div>
+    <div class="popup__content">
+      <button id="popupCloseBtn" class="popup__close" aria-label="Close pop-up">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18"/>
+          <line x1="6" y1="18" x2="18" y2="6"/>
+        </svg>
+      </button>
+      <div class="popup__media-slot" aria-hidden="true">
+        <!-- Video slot · empty initially · swap to video element when Angel sends asset -->
+      </div>
+      <p class="popup__monogram">S&amp;R</p>
+      <h3 id="popupTitle" class="popup__title">Welcome to Strands &amp; Roses</h3>
+      <p class="popup__body">20% off your first appointment &middot; June 1&ndash;30, 2026</p>
+      <a href="https://strandsandroses.square.site/s/appointments" class="popup__cta" target="_blank" rel="noopener noreferrer">Book Your Appointment</a>
+    </div>
+  </div>
+
+  <script>
+    /* R4 · New client pop-up · June 1-30 2026 · client request 2026-05-24 */
+    (function() {
+      var POPUP_END_DATE = Date.UTC(2026, 6, 1); /* July 1 2026 UTC · month index 6 (0-indexed) */
+      var STORAGE_KEY = 'popup_dismissed_strandsandroses_2026_06';
+      var SHOW_DELAY_MS = 5000;
+      var SCROLL_UP_THRESHOLD_PX = 100;
+
+      function shouldShow() {
+        if (Date.now() >= POPUP_END_DATE) return false;
+        if (localStorage.getItem(STORAGE_KEY) === '1') return false;
+        return true;
+      }
+
+      function dismissPopup() {
+        localStorage.setItem(STORAGE_KEY, '1');
+        var popup = document.getElementById('newClientPopup');
+        if (popup) popup.classList.add('popup--hidden');
+      }
+
+      function showPopup() {
+        var popup = document.getElementById('newClientPopup');
+        if (popup) popup.classList.remove('popup--hidden');
+      }
+
+      if (shouldShow()) {
+        setTimeout(showPopup, SHOW_DELAY_MS);
+
+        document.getElementById('popupCloseBtn') &&
+          document.getElementById('popupCloseBtn').addEventListener('click', dismissPopup);
+
+        document.querySelector('.popup__backdrop') &&
+          document.querySelector('.popup__backdrop').addEventListener('click', dismissPopup);
+
+        var lastScrollY = window.scrollY;
+        window.addEventListener('scroll', function() {
+          var currentY = window.scrollY;
+          if (lastScrollY - currentY > SCROLL_UP_THRESHOLD_PX) {
+            dismissPopup();
+          }
+          lastScrollY = currentY;
+        }, { passive: true });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') dismissPopup();
+        });
+      }
+    })();
+  </script>
 
 </body>
 </html>
