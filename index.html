@@ -4317,36 +4317,27 @@
   </div>
 
   <script>
-    /* R4 · New Client Welcome pop-up · June 1-30 2026 · client request 2026-05-24
+    /* R4 · New Client Welcome pop-up · client request 2026-05-24
        Editorial immersive · NOT generic modal
        Dismiss: X · backdrop click · ESC · swipe-down (mobile)
        Petal burst animation on dismiss (canon brand rose-petal trail reuse) */
     (function() {
-      var POPUP_START_DATE = Date.UTC(2026, 5, 1);  /* June 1 2026 UTC · month index 5 (0-indexed) */
-      var POPUP_END_DATE   = Date.UTC(2026, 6, 1);  /* July 1 2026 UTC */
       var STORAGE_KEY      = 'popup_dismissed_strandsandroses_2026_06';
       var SHOW_DELAY_MS    = 6500;
-      var SWIPE_THRESHOLD  = 80;
 
       /* Petal SVG · matches canon cursor petal (Strands & ROSES brand) */
       var PETAL_SVG = '<svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +
                         '<path d="M7 1.2c-1.4 2-3.4 3.5-4.4 5.6-1.1 2.4.2 5.1 2.8 5.7 1.2.3 2.5-.1 3.3-1 .8.9 2.1 1.3 3.3 1 2.6-.6 3.9-3.3 2.8-5.7C13.8 4.7 11.8 3.2 10.4 1.2c-.5.6-1.1 1.2-1.7 1.7-.6.5-1.2 1-1.7 1.7z" fill="#A04A6C" opacity="0.78"/>' +
                       '</svg>';
 
-      /* Preview bypass for Soberano review pre-launch · ?preview-popup=1 */
-      function isPreviewMode() {
-        try {
-          return new URLSearchParams(window.location.search).get('preview-popup') === '1';
-        } catch (e) {
-          return false;
-        }
-      }
+      /* Date gate · client request "month of June" · 2026-05-26 v8 verbatim */
+      var POPUP_START_DATE = Date.UTC(2026, 5, 1);  /* June 1 2026 UTC · month index 5 */
+      var POPUP_END_DATE   = Date.UTC(2026, 6, 1);  /* July 1 2026 UTC */
 
       function shouldShow() {
-        if (isPreviewMode()) return true;          /* Preview override · bypass date + localStorage */
         var now = Date.now();
-        if (now < POPUP_START_DATE) return false;  /* Not yet · before June 1 */
-        if (now >= POPUP_END_DATE) return false;   /* After June 30 */
+        if (now < POPUP_START_DATE) return false;
+        if (now >= POPUP_END_DATE) return false;
         if (localStorage.getItem(STORAGE_KEY) === '1') return false;
         return true;
       }
@@ -4405,55 +4396,23 @@
       if (shouldShow()) {
         setTimeout(showPopup, SHOW_DELAY_MS);
 
+        /* Cliente verbatim 2026-05-24: "exit click" + "scroll-up" + "goes away on its on" (localStorage flag) */
         var closeBtn = document.getElementById('popupCloseBtn');
         if (closeBtn) closeBtn.addEventListener('click', dismissPopup);
 
         var backdrop = document.querySelector('.popup__backdrop');
         if (backdrop) backdrop.addEventListener('click', dismissPopup);
 
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') dismissPopup();
-        });
-
-        /* Swipe-down dismiss · mobile bottom-sheet UX
-           Only active on mobile viewport · desktop side-drawer uses click outside */
-        var content = document.querySelector('#newClientPopup .popup__content');
-        if (content && window.matchMedia('(max-width: 767px)').matches) {
-          var touchStartY = 0;
-          var touchCurrentY = 0;
-          var dragging = false;
-          var originalTransition = content.style.transition;
-
-          content.addEventListener('touchstart', function(e) {
-            if (e.touches.length !== 1) return;
-            touchStartY = e.touches[0].clientY;
-            touchCurrentY = touchStartY;
-            dragging = true;
-            content.style.transition = 'none';
-          }, { passive: true });
-
-          content.addEventListener('touchmove', function(e) {
-            if (!dragging) return;
-            touchCurrentY = e.touches[0].clientY;
-            var delta = touchCurrentY - touchStartY;
-            if (delta > 0) {
-              content.style.transform = 'translateY(' + delta + 'px)';
-            }
-          }, { passive: true });
-
-          content.addEventListener('touchend', function() {
-            if (!dragging) return;
-            dragging = false;
-            content.style.transition = '';
-            var delta = touchCurrentY - touchStartY;
-            if (delta > SWIPE_THRESHOLD) {
-              content.style.transform = '';
-              dismissPopup();
-            } else {
-              content.style.transform = '';
-            }
-          });
-        }
+        /* Scroll-up dismiss · cliente verbatim 2026-05-26: "exited by click and when you scroll up" */
+        var lastScrollY = window.scrollY;
+        var SCROLL_UP_THRESHOLD = 80;
+        window.addEventListener('scroll', function() {
+          var currentY = window.scrollY;
+          if (lastScrollY - currentY > SCROLL_UP_THRESHOLD) {
+            dismissPopup();
+          }
+          lastScrollY = currentY;
+        }, { passive: true });
       }
     })();
   </script>
