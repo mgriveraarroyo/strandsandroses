@@ -668,20 +668,6 @@
 
     .hero__bg.loaded { transform: scale(1); }
 
-    /* R3 · blur overlay yellow letters · client request 2026-05-24 · CSS only · NO image edit */
-    .hero__bg::before {
-      content: '';
-      position: absolute;
-      top: 12%;
-      left: 10%;
-      width: 72%;
-      height: 26%;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 0;
-      pointer-events: none;
-    }
-
     /* Cinematic gradient overlay */
     .hero__overlay {
       position: absolute;
