@@ -4330,14 +4330,7 @@
                         '<path d="M7 1.2c-1.4 2-3.4 3.5-4.4 5.6-1.1 2.4.2 5.1 2.8 5.7 1.2.3 2.5-.1 3.3-1 .8.9 2.1 1.3 3.3 1 2.6-.6 3.9-3.3 2.8-5.7C13.8 4.7 11.8 3.2 10.4 1.2c-.5.6-1.1 1.2-1.7 1.7-.6.5-1.2 1-1.7 1.7z" fill="#A04A6C" opacity="0.78"/>' +
                       '</svg>';
 
-      /* Date gate · client request "month of June" · 2026-05-26 v8 verbatim */
-      var POPUP_START_DATE = Date.UTC(2026, 5, 1);  /* June 1 2026 UTC · month index 5 */
-      var POPUP_END_DATE   = Date.UTC(2026, 6, 1);  /* July 1 2026 UTC */
-
       function shouldShow() {
-        var now = Date.now();
-        if (now < POPUP_START_DATE) return false;
-        if (now >= POPUP_END_DATE) return false;
         if (localStorage.getItem(STORAGE_KEY) === '1') return false;
         return true;
       }
