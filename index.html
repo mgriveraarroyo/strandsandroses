@@ -2393,103 +2393,235 @@
     /* ════════════════════════════════════════════════════════════════
        R4 · New Client Pop-up · June 1-30 2026 · client request 2026-05-24
        ════════════════════════════════════════════════════════════════ */
+    /* New Client Pop-up · canon FORGE immersive · NOT generic modal
+       Mobile: bottom-sheet slide-up · Desktop: right side-drawer slide-in
+       Backdrop: blur (NOT blackout) · preserves hero immersion behind
+       Dismiss: X · backdrop click · ESC · swipe-down (mobile) · petal burst exit */
     .popup {
       position: fixed;
       inset: 0;
       z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      pointer-events: auto;
       opacity: 1;
       visibility: visible;
-      transition: opacity var(--dur-base) var(--ease), visibility var(--dur-base) var(--ease);
+      transition: opacity var(--dur-slow) var(--ease), visibility var(--dur-slow) var(--ease);
     }
     .popup--hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
+    .popup--hidden .popup__content {
+      transform: translateY(100%);
+    }
 
     .popup__backdrop {
       position: absolute;
       inset: 0;
-      background: rgba(10, 10, 10, 0.6);
+      background: rgba(245, 239, 239, 0.18);
+      backdrop-filter: blur(8px) saturate(1.05);
+      -webkit-backdrop-filter: blur(8px) saturate(1.05);
     }
 
     .popup__content {
-      position: relative;
-      background: var(--canvas);
-      max-width: 480px;
-      width: calc(100% - 2rem);
-      padding: 3rem 2rem 2.5rem;
-      border-radius: var(--radius-sm);
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(227,119,155,0.10) 0%, transparent 70%),
+        var(--canvas);
+      padding: 2.5rem 1.75rem 2rem;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
       text-align: center;
-      box-shadow: var(--shadow-xl);
+      box-shadow: 0 -24px 60px rgba(70, 57, 57, 0.18);
       z-index: 1;
+      transform: translateY(0);
+      transition: transform var(--dur-slow) var(--ease-spring);
+      max-height: 88vh;
+      overflow-y: auto;
+      touch-action: pan-y;
+    }
+    /* Drag handle visual cue (mobile bottom-sheet affordance) */
+    .popup__content::before {
+      content: '';
+      position: absolute;
+      top: 0.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 4px;
+      border-radius: 4px;
+      background: rgba(70, 57, 57, 0.18);
+    }
+
+    @media (min-width: 768px) {
+      .popup__content {
+        left: auto;
+        top: 0;
+        bottom: 0;
+        width: 440px;
+        max-width: 92vw;
+        max-height: 100vh;
+        padding: 4rem 2.5rem 3rem;
+        border-radius: 0;
+        border-top-left-radius: 32px;
+        border-bottom-left-radius: 32px;
+        box-shadow: -32px 0 80px rgba(70, 57, 57, 0.20);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transform: translateX(0);
+        transition: transform var(--dur-slow) var(--ease-spring);
+      }
+      .popup--hidden .popup__content {
+        transform: translateX(100%);
+      }
+      .popup__content::before {
+        display: none;
+      }
     }
 
     .popup__close {
       position: absolute;
-      top: 0.75rem;
-      right: 0.75rem;
+      top: 1.25rem;
+      right: 1.25rem;
       background: transparent;
       border: 0;
       padding: 0.75rem;
       cursor: pointer;
       color: var(--warm-brown);
-      transition: color var(--dur-fast) var(--ease);
+      opacity: 0.55;
+      transition: opacity var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
       line-height: 0;
     }
     .popup__close:hover,
     .popup__close:focus-visible {
+      opacity: 1;
       color: var(--carmine-text);
+      transform: rotate(90deg);
     }
 
     .popup__monogram {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 1.25rem;
+      font-size: clamp(1rem, 2.6vw, 1.15rem);
       color: var(--carmine-text);
-      margin-bottom: 1rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      margin: 0 0 0.4rem 0;
+      opacity: 0.85;
+    }
+
+    /* Thin pink accent line · NO block · editorial */
+    .popup__rule {
+      width: 36px;
+      height: 1px;
+      background: var(--carmine);
+      margin: 0.75rem auto 1.5rem;
+      opacity: 0.7;
     }
 
     .popup__title {
       font-family: var(--font-serif);
-      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-style: italic;
+      font-size: clamp(2.4rem, 8vw, 3.4rem);
+      line-height: 1.05;
       color: var(--warm-brown);
-      margin-bottom: 0.75rem;
+      margin: 0 0 1.25rem 0;
       font-weight: 400;
+      letter-spacing: -0.005em;
     }
 
     .popup__body {
       font-family: var(--font-sans);
-      font-size: var(--text-base);
-      color: var(--ink);
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
+      font-size: clamp(0.95rem, 2.4vw, 1rem);
+      color: var(--ink-mid, var(--ink));
+      letter-spacing: 0.02em;
+      line-height: 1.55;
+      max-width: 320px;
+      margin: 0 auto 1.75rem;
     }
 
-    .popup__cta {
-      display: inline-block;
-      padding: 0.875rem 1.5rem;
-      background: var(--carmine-dim);
-      color: #FFFFFF;
-      font-family: var(--font-sans);
-      font-size: var(--text-base);
+    .popup__body strong {
       font-weight: 500;
+      color: var(--warm-brown);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.78em;
+      display: block;
+      margin-bottom: 0.45rem;
+      opacity: 0.75;
+    }
+
+    /* Editorial CTA · NOT a solid button block · underline + arrow */
+    .popup__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0;
+      background: transparent;
+      color: var(--carmine-text);
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+      font-weight: 400;
       text-decoration: none;
       letter-spacing: 0.04em;
-      text-transform: uppercase;
-      border-radius: var(--radius-sm);
-      transition: background var(--dur-fast) var(--ease);
+      border-bottom: 1px solid var(--carmine);
+      transition: gap var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
     }
     .popup__cta:hover,
     .popup__cta:focus-visible {
-      background: #9D3F5E;
+      gap: 0.85rem;
+      color: var(--carmine-dim);
+    }
+    .popup__cta-arrow {
+      display: inline-block;
+      transition: transform var(--dur-fast) var(--ease);
+    }
+    .popup__cta:hover .popup__cta-arrow {
+      transform: translateX(3px);
     }
 
-    .popup__media-slot { /* video swap slot · empty initially */ }
+    .popup__sigilo {
+      width: 28px;
+      height: 28px;
+      margin: 1.5rem auto 0;
+      opacity: 0.32;
+      color: var(--carmine-text);
+    }
+
+    .popup__media-slot {
+      margin: 0 auto 1.25rem;
+      max-width: 280px;
+    }
+    .popup__media-slot video {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+
+    /* Petal burst — spawned on dismiss (canon brand petal trail reuse) */
+    .popup-petal {
+      position: fixed;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+      z-index: 1001;
+      will-change: transform, opacity;
+    }
+    @keyframes popupPetalDrift {
+      0%   { opacity: 0.9; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(1); }
+      100% { opacity: 0;   transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 100px))) rotate(calc(var(--rot, 0deg) + 180deg)) scale(0.3); }
+    }
+    .popup-petal.animate {
+      animation: popupPetalDrift 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    }
+    @media (hover: none), (pointer: coarse) {
+      /* Petals still play on touch · they are dismiss feedback not cursor */
+    }
 </style>
 </head>
 
@@ -4154,44 +4286,105 @@
     </a>
   </div>
 
-  <!-- R4 · New Client Pop-up · June 1-30 2026 launch window · client request 2026-05-24 -->
+  <!-- R4 · New Client Welcome · June 1-30 2026 · editorial immersive · NOT generic modal -->
   <div id="newClientPopup" class="popup popup--hidden" role="dialog" aria-labelledby="popupTitle" aria-modal="true">
     <div class="popup__backdrop" aria-hidden="true"></div>
     <div class="popup__content">
-      <button id="popupCloseBtn" class="popup__close" aria-label="Close pop-up">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+      <button id="popupCloseBtn" class="popup__close" aria-label="Close">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true">
           <line x1="6" y1="6" x2="18" y2="18"/>
           <line x1="6" y1="18" x2="18" y2="6"/>
         </svg>
       </button>
       <div class="popup__media-slot" aria-hidden="true">
-        <!-- Video slot · empty initially · swap to video element when Angel sends asset -->
+        <!-- Video slot · empty initially · swap to <video autoplay muted loop playsinline> when Angel sends asset -->
       </div>
-      <p class="popup__monogram">S&amp;R</p>
-      <h3 id="popupTitle" class="popup__title">Welcome to Strands &amp; Roses</h3>
-      <p class="popup__body">20% off your first appointment &middot; June 1&ndash;30, 2026</p>
-      <a href="https://strandsandroses.square.site/s/appointments" class="popup__cta" target="_blank" rel="noopener noreferrer">Book Your Appointment</a>
+      <p class="popup__monogram">Strands &amp; Roses</p>
+      <div class="popup__rule" aria-hidden="true"></div>
+      <h3 id="popupTitle" class="popup__title">A welcome,<br><em>just for you.</em></h3>
+      <p class="popup__body">
+        <strong>Anniversary Month · June 1&ndash;30</strong>
+        Twenty percent off your first appointment &mdash; an invitation to step into the chair.
+      </p>
+      <a href="https://strandsandroses.square.site/s/appointments" class="popup__cta" target="_blank" rel="noopener noreferrer">
+        Reserve your welcome
+        <span class="popup__cta-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <svg class="popup__sigilo" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <path d="M16 6c-3.5 0-6 2.5-6 5.5 0 1.8 1 3.3 2.5 4-1.3.8-2.5 2.2-2.5 4 0 3 2.5 5.5 6 5.5s6-2.5 6-5.5c0-1.8-1.2-3.2-2.5-4 1.5-.7 2.5-2.2 2.5-4 0-3-2.5-5.5-6-5.5zm0 1.5c2.4 0 4.5 1.8 4.5 4s-2.1 4-4.5 4-4.5-1.8-4.5-4 2.1-4 4.5-4zm0 8.5c2.4 0 4.5 1.8 4.5 4s-2.1 4-4.5 4-4.5-1.8-4.5-4 2.1-4 4.5-4z"/>
+      </svg>
     </div>
   </div>
 
   <script>
-    /* R4 · New client pop-up · June 1-30 2026 · client request 2026-05-24 */
+    /* R4 · New Client Welcome pop-up · June 1-30 2026 · client request 2026-05-24
+       Editorial immersive · NOT generic modal
+       Dismiss: X · backdrop click · ESC · swipe-down (mobile)
+       Petal burst animation on dismiss (canon brand rose-petal trail reuse) */
     (function() {
-      var POPUP_END_DATE = Date.UTC(2026, 6, 1); /* July 1 2026 UTC · month index 6 (0-indexed) */
-      var STORAGE_KEY = 'popup_dismissed_strandsandroses_2026_06';
-      var SHOW_DELAY_MS = 5000;
-      var SCROLL_UP_THRESHOLD_PX = 100;
+      var POPUP_START_DATE = Date.UTC(2026, 5, 1);  /* June 1 2026 UTC · month index 5 (0-indexed) */
+      var POPUP_END_DATE   = Date.UTC(2026, 6, 1);  /* July 1 2026 UTC */
+      var STORAGE_KEY      = 'popup_dismissed_strandsandroses_2026_06';
+      var SHOW_DELAY_MS    = 6500;
+      var SWIPE_THRESHOLD  = 80;
+
+      /* Petal SVG · matches canon cursor petal (Strands & ROSES brand) */
+      var PETAL_SVG = '<svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                        '<path d="M7 1.2c-1.4 2-3.4 3.5-4.4 5.6-1.1 2.4.2 5.1 2.8 5.7 1.2.3 2.5-.1 3.3-1 .8.9 2.1 1.3 3.3 1 2.6-.6 3.9-3.3 2.8-5.7C13.8 4.7 11.8 3.2 10.4 1.2c-.5.6-1.1 1.2-1.7 1.7-.6.5-1.2 1-1.7 1.7z" fill="#A04A6C" opacity="0.78"/>' +
+                      '</svg>';
 
       function shouldShow() {
-        if (Date.now() >= POPUP_END_DATE) return false;
+        var now = Date.now();
+        if (now < POPUP_START_DATE) return false;  /* Not yet · before June 1 */
+        if (now >= POPUP_END_DATE) return false;   /* After June 30 */
         if (localStorage.getItem(STORAGE_KEY) === '1') return false;
         return true;
       }
 
-      function dismissPopup() {
-        localStorage.setItem(STORAGE_KEY, '1');
+      /* Spawn rose petal burst from popup center · canon FORGE brand */
+      function spawnPetalBurst() {
         var popup = document.getElementById('newClientPopup');
-        if (popup) popup.classList.add('popup--hidden');
+        if (!popup) return;
+        var content = popup.querySelector('.popup__content');
+        if (!content) return;
+        var rect = content.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+
+        var count = 14;
+        for (var i = 0; i < count; i++) {
+          (function(idx) {
+            setTimeout(function() {
+              var petal = document.createElement('div');
+              petal.className = 'popup-petal';
+              petal.innerHTML = PETAL_SVG;
+              /* Random spread · drift down + lateral */
+              var angle = (Math.random() - 0.5) * Math.PI;            /* -90° to +90° */
+              var distance = 80 + Math.random() * 180;
+              var dx = Math.sin(angle) * distance;
+              var dy = 60 + Math.random() * 220;                       /* always downward */
+              var rot = (Math.random() - 0.5) * 90;                    /* -45° to +45° initial */
+              petal.style.left = cx + 'px';
+              petal.style.top  = cy + 'px';
+              petal.style.setProperty('--dx', dx + 'px');
+              petal.style.setProperty('--dy', dy + 'px');
+              petal.style.setProperty('--rot', rot + 'deg');
+              document.body.appendChild(petal);
+              requestAnimationFrame(function() { petal.classList.add('animate'); });
+              setTimeout(function() {
+                if (petal.parentNode) petal.parentNode.removeChild(petal);
+              }, 1500);
+            }, idx * 35);  /* staggered for natural fall */
+          })(i);
+        }
+      }
+
+      function dismissPopup() {
+        var popup = document.getElementById('newClientPopup');
+        if (!popup || popup.classList.contains('popup--hidden')) return;
+        localStorage.setItem(STORAGE_KEY, '1');
+        spawnPetalBurst();
+        popup.classList.add('popup--hidden');
       }
 
       function showPopup() {
@@ -4202,24 +4395,55 @@
       if (shouldShow()) {
         setTimeout(showPopup, SHOW_DELAY_MS);
 
-        document.getElementById('popupCloseBtn') &&
-          document.getElementById('popupCloseBtn').addEventListener('click', dismissPopup);
+        var closeBtn = document.getElementById('popupCloseBtn');
+        if (closeBtn) closeBtn.addEventListener('click', dismissPopup);
 
-        document.querySelector('.popup__backdrop') &&
-          document.querySelector('.popup__backdrop').addEventListener('click', dismissPopup);
-
-        var lastScrollY = window.scrollY;
-        window.addEventListener('scroll', function() {
-          var currentY = window.scrollY;
-          if (lastScrollY - currentY > SCROLL_UP_THRESHOLD_PX) {
-            dismissPopup();
-          }
-          lastScrollY = currentY;
-        }, { passive: true });
+        var backdrop = document.querySelector('.popup__backdrop');
+        if (backdrop) backdrop.addEventListener('click', dismissPopup);
 
         document.addEventListener('keydown', function(e) {
           if (e.key === 'Escape') dismissPopup();
         });
+
+        /* Swipe-down dismiss · mobile bottom-sheet UX
+           Only active on mobile viewport · desktop side-drawer uses click outside */
+        var content = document.querySelector('#newClientPopup .popup__content');
+        if (content && window.matchMedia('(max-width: 767px)').matches) {
+          var touchStartY = 0;
+          var touchCurrentY = 0;
+          var dragging = false;
+          var originalTransition = content.style.transition;
+
+          content.addEventListener('touchstart', function(e) {
+            if (e.touches.length !== 1) return;
+            touchStartY = e.touches[0].clientY;
+            touchCurrentY = touchStartY;
+            dragging = true;
+            content.style.transition = 'none';
+          }, { passive: true });
+
+          content.addEventListener('touchmove', function(e) {
+            if (!dragging) return;
+            touchCurrentY = e.touches[0].clientY;
+            var delta = touchCurrentY - touchStartY;
+            if (delta > 0) {
+              content.style.transform = 'translateY(' + delta + 'px)';
+            }
+          }, { passive: true });
+
+          content.addEventListener('touchend', function() {
+            if (!dragging) return;
+            dragging = false;
+            content.style.transition = '';
+            var delta = touchCurrentY - touchStartY;
+            if (delta > SWIPE_THRESHOLD) {
+              content.style.transform = '';
+              dismissPopup();
+            } else {
+              content.style.transform = '';
+            }
+          });
+        }
       }
     })();
   </script>
