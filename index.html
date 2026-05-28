@@ -501,22 +501,56 @@
       letter-spacing: 0.02em;
     }
 
-    /* Logo S&R · nav header · 2026-05-28 */
-    .nav__logo-img {
-      height: 48px;
-      width: auto;
-      max-width: 96px;
-      display: block;
-      transition: transform var(--dur-fast) var(--ease);
+    /* Wordmark · nav banner · split-logo · 2026-05-28 */
+    .nav__wordmark {
+      font-family: var(--font-serif);
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      color: var(--canvas);
+      text-decoration: none;
+      white-space: nowrap;
+      display: inline-block;
+      transform-origin: center top;
+      transition: color 0.25s ease,
+                  opacity 0.4s ease-in-out,
+                  transform 0.4s ease-in-out,
+                  font-size 0.4s ease-in-out,
+                  letter-spacing 0.4s ease-in-out;
+      will-change: transform;
     }
-    .nav__logo:hover .nav__logo-img {
-      transform: scale(1.04);
+    .nav__logo:hover .nav__wordmark {
+      color: var(--carmine);
+      opacity: 1;
     }
-    .nav.scrolled .nav__logo-img {
-      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.12));
+    .nav.scrolled .nav__wordmark {
+      color: var(--canvas);
+    }
+
+    /* Split-Logo: top state — wordmark descends to crown the silhouette */
+    .nav.is-top .nav__wordmark {
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+      letter-spacing: 0.08em;
+      color: var(--canvas);
+      opacity: 0.95;
+      /* translateY is set dynamically by JS via CSS custom property */
+      transform: translateY(var(--split-logo-offset, 0px));
+    }
+    .nav.is-top .nav__logo:hover .nav__wordmark {
+      color: var(--carmine);
+    }
+
+    /* Mobile: disable Split-Logo offset on small screens (≤ 640px) */
+    @media (max-width: 640px) {
+      .nav.is-top .nav__wordmark {
+        transform: none !important;
+        font-size: 1rem;
+        letter-spacing: 0.04em;
+      }
     }
     @media (max-width: 480px) {
-      .nav__logo-img { height: 40px; max-width: 80px; }
+      .nav__wordmark { font-size: 1rem; }
     }
 
     .nav__links {
@@ -709,6 +743,26 @@
       padding: var(--space-3xl) 0 var(--space-2xl);
     }
 
+    /* Silhouette · hero editorial · split-logo · 2026-05-28 */
+    .hero__silhouette {
+      display: block;
+      width: clamp(160px, 22vw, 280px);
+      height: auto;
+      margin-bottom: var(--space-md);
+      opacity: 0.90;
+      filter: drop-shadow(0 12px 32px rgba(0,0,0,0.50));
+      transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+      will-change: transform;
+    }
+    /* Split-Logo: top state — silhouette lifts slightly toward the wordmark */
+    .hero.is-top .hero__silhouette {
+      opacity: 0.92;
+    }
+    @media (max-width: 640px) {
+      .hero.is-top .hero__silhouette {
+        transform: none !important;
+      }
+    }
     .hero__eyebrow {
       font-family: var(--font-sans);
       font-size: var(--text-xs);
@@ -2303,7 +2357,7 @@
 
       /* v5.4 · Mobile fixes Chrome QA 2026-05-22 */
       /* Hero subtitle · permitir wrap completo (los &nbsp; ya removidos) */
-      .hero__subtitle { overflow-wrap: break-word; word-break: normal; white-space: normal; }
+      .hero__subtitle { word-break: keep-all; overflow-wrap: normal; hyphens: none; white-space: normal; }
 
       /* Package card · reducir padding interior (root cause real Fix #2 v5.4.1 Chrome revalidación) */
       /* QA Chrome confirmó: el .btn padding NO era el constraint · el .package-card padding sí */
@@ -2401,7 +2455,7 @@
     /* ════════════════════════════════════════════════════════════════
        R4 · New Client Pop-up · June 1-30 2026 · client request 2026-05-24
        ════════════════════════════════════════════════════════════════ */
-    /* New Client Pop-up · canon FORGE immersive · NOT generic modal
+    /* New Client Pop-up · immersive editorial · NOT generic modal
        Mobile: bottom-sheet slide-up · Desktop: right side-drawer slide-in
        Backdrop: blur (NOT blackout) · preserves hero immersion behind
        Dismiss: X · backdrop click · ESC · swipe-down (mobile) · petal burst exit */
@@ -2515,10 +2569,10 @@
     .popup__logo {
       display: block;
       margin: 0 auto 0.5rem;
-      width: clamp(96px, 18vw, 120px);
+      width: clamp(80px, 15vw, 104px);
       height: auto;
+      opacity: 0.88;
       mix-blend-mode: multiply;
-      opacity: 0.92;
       animation: popupLogoFade 0.6s var(--ease) 0.35s both;
     }
     @keyframes popupLogoFade {
@@ -2677,7 +2731,8 @@
       <div class="nav__inner">
 
         <a href="#hero" class="nav__logo" aria-label="Strands &amp; Roses home">
-          <img class="nav__logo-img" src="assets/logo-strands-roses.png" alt="Strands &amp; Roses" width="48" height="48" loading="eager">
+          <!-- Wordmark · nav banner · 2026-05-28 -->
+          <span class="nav__wordmark">Strands &amp; Roses</span>
         </a>
 
         <ul class="nav__links" role="list">
@@ -2744,6 +2799,12 @@
       <div class="hero__content">
         <div class="container">
 
+          <!-- Silhouette · hero editorial · above headline · 2026-05-28 -->
+          <img class="hero__silhouette reveal delay-0"
+               src="assets/logo-silhouette.png"
+               alt="Strands &amp; Roses"
+               width="72" height="72"
+               loading="eager">
           <h1 class="hero__title reveal delay-1">
             Where beauty<br>
             <em>becomes</em><br>
@@ -3957,11 +4018,68 @@
       var overlay   = document.getElementById('navOverlay');
       var closeLinks = document.querySelectorAll('[data-close-drawer]');
 
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 60) {
-          nav.classList.add('scrolled');
+      /* Split-Logo: references to hero and nav elements */
+      var heroSection  = document.getElementById('hero');
+      var navWordmark  = nav.querySelector('.nav__wordmark');
+
+      /* Calculate the vertical offset needed to project wordmark over silhouette */
+      function calcSplitOffset() {
+        if (!heroSection || !navWordmark) return 0;
+        var silhouette = heroSection.querySelector('.hero__silhouette');
+        if (!silhouette) return 0;
+        var silRect  = silhouette.getBoundingClientRect();
+        var wmRect   = navWordmark.getBoundingClientRect();
+        /* Distance from bottom of wordmark to top of silhouette */
+        var gap = silRect.top - wmRect.bottom;
+        /* We want the wordmark to sit just above the silhouette with ~8px breathing room */
+        return Math.max(0, gap - 8);
+      }
+
+      /* Apply or remove Split-Logo state */
+      function applySplitState(atTop) {
+        if (atTop) {
+          var offset = calcSplitOffset();
+          nav.style.setProperty('--split-logo-offset', offset + 'px');
+          nav.classList.add('is-top');
+          if (heroSection) heroSection.classList.add('is-top');
         } else {
-          nav.classList.remove('scrolled');
+          nav.style.removeProperty('--split-logo-offset');
+          nav.classList.remove('is-top');
+          if (heroSection) heroSection.classList.remove('is-top');
+        }
+      }
+
+      /* Throttled scroll handler using requestAnimationFrame */
+      var splitRafPending = false;
+      function onScrollSplit() {
+        if (splitRafPending) return;
+        splitRafPending = true;
+        requestAnimationFrame(function() {
+          splitRafPending = false;
+          var y = window.scrollY;
+          /* Sticky nav threshold: 60px (existing) */
+          if (y > 60) {
+            nav.classList.add('scrolled');
+          } else {
+            nav.classList.remove('scrolled');
+          }
+          /* Split-Logo threshold: 80px */
+          applySplitState(y <= 80);
+        });
+      }
+
+      window.addEventListener('scroll', onScrollSplit, { passive: true });
+
+      /* Initialize state on page load (scrollY likely 0) */
+      /* Use a short delay to let layout settle after fonts/images load */
+      setTimeout(function() {
+        applySplitState(window.scrollY <= 80);
+      }, 120);
+
+      /* Re-calculate offset on resize (viewport change) */
+      window.addEventListener('resize', function() {
+        if (window.scrollY <= 80) {
+          applySplitState(true);
         }
       }, { passive: true });
 
@@ -4356,11 +4474,12 @@
                       '</svg>';
 
       function shouldShow() {
+        /* Suppressed only by explicit user dismiss · no date gate · no UA/viewport check */
         if (localStorage.getItem(STORAGE_KEY) === '1') return false;
         return true;
       }
 
-      /* Spawn rose petal burst from popup center · canon FORGE brand */
+      /* Spawn rose petal burst from popup center · brand signature */
       function spawnPetalBurst() {
         var popup = document.getElementById('newClientPopup');
         if (!popup) return;
