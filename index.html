@@ -512,14 +512,27 @@
       text-decoration: none;
       white-space: nowrap;
       display: inline-block;
+      position: relative; /* HERO COVER v5.2.6 · anchor for the brand hover underline */
       opacity: 0; /* Hidden at scrollY=0, fades in on scroll */
       pointer-events: none;
       transition: color 0.25s ease,
                   opacity 0.3s ease-out;
       will-change: opacity;
     }
+    /* v5.2.6 · brand reacts like the nav links — same carmine underline-grow on hover */
+    .nav__wordmark::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--carmine);
+      transition: width var(--dur-base) var(--ease);
+    }
     .nav__logo:hover .nav__wordmark {
       color: var(--carmine);
+    }
+    .nav__logo:hover .nav__wordmark::after {
+      width: 100%;
     }
     .nav.scrolled .nav__wordmark {
       opacity: 1;
@@ -729,10 +742,11 @@
     }
 
     /* Elite Unified Logo Block */
+    /* HERO COVER v5.2.6 · brand unit composed LEFT on the same axis as the slogan (was centered) */
     .hero__logo-wrapper {
       position: relative;
-      width: clamp(230px, 32vw, 400px);
-      margin: 0 auto var(--space-sm);
+      width: clamp(280px, 40vw, 500px);
+      margin: 0 0 var(--space-md);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -795,7 +809,7 @@
     
     .hero__logo-silhouette {
       display: block;
-      width: 55%; /* Relatively larger than the arched text framed space */
+      width: 74%; /* HERO COVER v5.2.6 · enlarged for presence · fills proportionally without covering text/CTA */
       height: auto;
       z-index: 1;
       opacity: 0.90;
@@ -2460,26 +2474,9 @@
       }
     }
 
-    /* Elite Hero Shift on Welcome Modal/Popup Active (Framing in remaining space) */
-    body.popup-active .hero__content,
-    body.sq-popup-active .hero__content {
-      transform: translateX(-160px) scale(0.95);
-    }
-    
-    @media (max-width: 1024px) {
-      body.popup-active .hero__content,
-      body.sq-popup-active .hero__content {
-        transform: translateX(-100px) scale(0.92);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      /* Mobile bottom sheet active: shift logo and headline upward to stay visible above bottom sheet */
-      body.popup-active .hero__content,
-      body.sq-popup-active .hero__content {
-        transform: translateY(-130px) scale(0.85);
-      }
-    }
+    /* HERO COVER v5.2.6 · modal-state hero transforms REMOVED — the cover composition stays
+       identical in position and size whether or not a modal/popup is open. The brand unit now
+       lives on the left; the popup is a right-side panel, so no shifting is needed to avoid it. */
 
     /* ════════════════════════════════════════════════════════════════
        SKIP NAVIGATION LINK · WCAG 2.4.1
