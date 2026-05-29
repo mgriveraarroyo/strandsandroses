@@ -742,11 +742,12 @@
     }
 
     /* Elite Unified Logo Block */
-    /* HERO COVER v5.2.6 · brand unit composed LEFT on the same axis as the slogan (was centered) */
+    /* HERO COVER v5.2.7 · brand unit truly flush-left on the slogan's axis (x=144) — wrapper narrowed
+       so the centered arc+silhouette fill it and start at the left edge instead of floating center-left */
     .hero__logo-wrapper {
       position: relative;
-      width: clamp(280px, 40vw, 500px);
-      margin: 0 0 var(--space-md);
+      width: clamp(240px, 30vw, 420px);
+      margin: 0 0 var(--space-sm);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -809,7 +810,7 @@
     
     .hero__logo-silhouette {
       display: block;
-      width: 74%; /* HERO COVER v5.2.6 · enlarged for presence · fills proportionally without covering text/CTA */
+      width: 100%; /* HERO COVER v5.2.7 · fills the narrowed wrapper → arc+figure flush-left on the slogan axis, presence kept */
       height: auto;
       z-index: 1;
       opacity: 0.90;
