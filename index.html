@@ -501,7 +501,7 @@
       letter-spacing: 0.02em;
     }
 
-    /* Wordmark · nav banner · split-logo · 2026-05-28 */
+    /* Wordmark · sticky nav banner · 2026-05-28 */
     .nav__wordmark {
       font-family: var(--font-serif);
       font-size: clamp(1.1rem, 2vw, 1.45rem);
@@ -512,42 +512,25 @@
       text-decoration: none;
       white-space: nowrap;
       display: inline-block;
-      transform-origin: center top;
+      opacity: 0; /* Hidden at scrollY=0, fades in on scroll */
+      pointer-events: none;
       transition: color 0.25s ease,
-                  opacity 0.4s ease-in-out,
-                  transform 0.4s ease-in-out,
-                  font-size 0.4s ease-in-out,
-                  letter-spacing 0.4s ease-in-out;
-      will-change: transform;
+                  opacity 0.3s ease-out;
+      will-change: opacity;
     }
     .nav__logo:hover .nav__wordmark {
       color: var(--carmine);
-      opacity: 1;
     }
     .nav.scrolled .nav__wordmark {
+      opacity: 1;
+      pointer-events: auto;
       color: var(--canvas);
     }
-
-    /* Split-Logo: top state — wordmark descends to crown the silhouette */
-    .nav.is-top .nav__wordmark {
-      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
-      letter-spacing: 0.08em;
-      color: var(--canvas);
-      opacity: 0.95;
-      /* translateY is set dynamically by JS via CSS custom property */
-      transform: translateY(var(--split-logo-offset, 0px));
-    }
-    .nav.is-top .nav__logo:hover .nav__wordmark {
-      color: var(--carmine);
-    }
-
-    /* Mobile: disable Split-Logo offset on small screens (≤ 640px) */
-    @media (max-width: 640px) {
-      .nav.is-top .nav__wordmark {
-        transform: none !important;
-        font-size: 1rem;
-        letter-spacing: 0.04em;
-      }
+    /* D2 fix v5.2.5 · hard-threshold hidden state for hero logo — no scroll-tied cross-fade, CSS transition handles the swap */
+    .hero__logo-wrapper.is-hidden {
+      opacity: 0;
+      transform: translateY(-12px) scale(0.96);
+      pointer-events: none;
     }
     @media (max-width: 480px) {
       .nav__wordmark { font-size: 1rem; }
@@ -741,27 +724,82 @@
       z-index: 2;
       width: 100%;
       padding: var(--space-3xl) 0 var(--space-2xl);
-    }
-
-    /* Silhouette · hero editorial · split-logo · 2026-05-28 */
-    .hero__silhouette {
-      display: block;
-      width: clamp(160px, 22vw, 280px);
-      height: auto;
-      margin-bottom: var(--space-md);
-      opacity: 0.90;
-      filter: drop-shadow(0 12px 32px rgba(0,0,0,0.50));
-      transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       will-change: transform;
     }
-    /* Split-Logo: top state — silhouette lifts slightly toward the wordmark */
-    .hero.is-top .hero__silhouette {
-      opacity: 0.92;
+
+    /* Elite Unified Logo Block */
+    .hero__logo-wrapper {
+      position: relative;
+      width: clamp(230px, 32vw, 400px);
+      margin: 0 auto var(--space-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+      will-change: transform, opacity;
     }
-    @media (max-width: 640px) {
-      .hero.is-top .hero__silhouette {
-        transform: none !important;
-      }
+    /* D1 fix v5.2.5 · focal scrim — dark radial anchor separates the logo from the busy hero photo (elite-salon pattern) */
+    .hero__logo-wrapper::before {
+      content: "";
+      position: absolute;
+      width: 160%;
+      height: 165%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(
+        ellipse 56% 60% at 50% 46%,
+        rgba(10,10,10,0.74) 0%,
+        rgba(10,10,10,0.50) 40%,
+        rgba(10,10,10,0.0) 76%
+      );
+      filter: blur(12px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    /* warm brand halo over the scrim, still behind the logo */
+    .hero__logo-wrapper::after {
+      content: "";
+      position: absolute;
+      width: 56%;
+      height: 64%;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -42%);
+      background: radial-gradient(circle, rgba(227,119,155,0.22) 0%, rgba(227,119,155,0.06) 55%, transparent 80%);
+      filter: blur(18px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .hero__logo-arc {
+      width: 100%;
+      height: auto;
+      margin-bottom: -32px; /* Pulls the arched text down so it rests perfectly as a crown */
+      z-index: 2;
+      overflow: visible;
+    }
+    
+    .hero__logo-arc text {
+      font-family: var(--font-serif);
+      font-size: 20px; /* Generous vector sizing */
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      fill: var(--canvas);
+      text-transform: uppercase;
+      opacity: 0.95;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    }
+    
+    .hero__logo-silhouette {
+      display: block;
+      width: 55%; /* Relatively larger than the arched text framed space */
+      height: auto;
+      z-index: 1;
+      opacity: 0.90;
+      filter: drop-shadow(0 12px 32px rgba(0,0,0,0.60));
     }
     .hero__eyebrow {
       font-family: var(--font-sans);
@@ -2405,6 +2443,44 @@
       }
     }
 
+    /* Elite responsive background alignment for mobile viewports (prevent logo-cup collision) */
+    @media (max-width: 767px) {
+      .hero__bg {
+        background-position: 28% 20% !important; /* Slide the hand & champagne cup out of frame */
+      }
+      .hero__overlay {
+        background:
+          linear-gradient(
+            to bottom,
+            rgba(10,10,10,0.30) 0%,
+            rgba(10,10,10,0.15) 30%,
+            rgba(10,10,10,0.55) 65%,
+            rgba(10,10,10,0.92) 100%
+          ) !important;
+      }
+    }
+
+    /* Elite Hero Shift on Welcome Modal/Popup Active (Framing in remaining space) */
+    body.popup-active .hero__content,
+    body.sq-popup-active .hero__content {
+      transform: translateX(-160px) scale(0.95);
+    }
+    
+    @media (max-width: 1024px) {
+      body.popup-active .hero__content,
+      body.sq-popup-active .hero__content {
+        transform: translateX(-100px) scale(0.92);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      /* Mobile bottom sheet active: shift logo and headline upward to stay visible above bottom sheet */
+      body.popup-active .hero__content,
+      body.sq-popup-active .hero__content {
+        transform: translateY(-130px) scale(0.85);
+      }
+    }
+
     /* ════════════════════════════════════════════════════════════════
        SKIP NAVIGATION LINK · WCAG 2.4.1
        ════════════════════════════════════════════════════════════════ */
@@ -2799,12 +2875,23 @@
       <div class="hero__content">
         <div class="container">
 
-          <!-- Silhouette · hero editorial · above headline · 2026-05-28 -->
-          <img class="hero__silhouette reveal delay-0"
-               src="assets/logo-silhouette.png"
-               alt="Strands &amp; Roses"
-               width="72" height="72"
-               loading="eager">
+          <!-- Unified Curved Brand Logo · Editorial Premium · 2026-05-28 -->
+          <div class="hero__logo-wrapper reveal delay-0">
+            <!-- Curved Arched Wordmark SVG -->
+            <svg viewBox="0 0 320 100" class="hero__logo-arc" aria-hidden="true">
+              <path id="textPathCurve" d="M 20,85 A 150,150 0 0,1 300,85" fill="transparent" />
+              <text>
+                <textPath href="#textPathCurve" startOffset="50%" text-anchor="middle">
+                  STRANDS <tspan font-style="italic" font-family="'Fraunces', Georgia, serif" text-transform="none">&amp;</tspan> ROSES
+                </textPath>
+              </text>
+            </svg>
+            <!-- Silhouette Line Art -->
+            <img class="hero__logo-silhouette"
+                 src="assets/logo-silhouette.png"
+                 alt="Strands &amp; Roses Line Art Silhouette"
+                 loading="eager">
+          </div>
           <h1 class="hero__title reveal delay-1">
             Where beauty<br>
             <em>becomes</em><br>
@@ -3887,12 +3974,14 @@
         popupCTA.href = url;
         popupMsg.innerHTML = msg;
         overlay.classList.add('open');
+        document.body.classList.add('sq-popup-active');
         document.body.style.overflow = 'hidden';
         popupClose.focus();
       }
 
       function closePopup() {
         overlay.classList.remove('open');
+        document.body.classList.remove('sq-popup-active');
         document.body.style.overflow = '';
       }
 
@@ -4018,70 +4107,44 @@
       var overlay   = document.getElementById('navOverlay');
       var closeLinks = document.querySelectorAll('[data-close-drawer]');
 
-      /* Split-Logo: references to hero and nav elements */
-      var heroSection  = document.getElementById('hero');
-      var navWordmark  = nav.querySelector('.nav__wordmark');
+      /* Elite Scroll Transition: GPU-composited cross-fade of arched and straight logos */
+      var heroLogo    = document.querySelector('.hero__logo-wrapper');
+      var navWordmark = document.querySelector('.nav__wordmark');
 
-      /* Calculate the vertical offset needed to project wordmark over silhouette */
-      function calcSplitOffset() {
-        if (!heroSection || !navWordmark) return 0;
-        var silhouette = heroSection.querySelector('.hero__silhouette');
-        if (!silhouette) return 0;
-        var silRect  = silhouette.getBoundingClientRect();
-        var wmRect   = navWordmark.getBoundingClientRect();
-        /* Distance from bottom of wordmark to top of silhouette */
-        var gap = silRect.top - wmRect.bottom;
-        /* We want the wordmark to sit just above the silhouette with ~8px breathing room */
-        return Math.max(0, gap - 8);
-      }
+      function onScrollTransition() {
+        var y = window.scrollY;
 
-      /* Apply or remove Split-Logo state */
-      function applySplitState(atTop) {
-        if (atTop) {
-          var offset = calcSplitOffset();
-          nav.style.setProperty('--split-logo-offset', offset + 'px');
-          nav.classList.add('is-top');
-          if (heroSection) heroSection.classList.add('is-top');
-        } else {
-          nav.style.removeProperty('--split-logo-offset');
-          nav.classList.remove('is-top');
-          if (heroSection) heroSection.classList.remove('is-top');
+        // D2 fix v5.2.5 · hard-threshold swap (no proportional cross-fade) — eliminates the double-wordmark
+        // overlap that lingered across the old 0–120px range. CSS transitions on .nav__wordmark (opacity)
+        // and .hero__logo-wrapper.is-hidden handle the visual fade. Hysteresis: engage at 80px, release at 60px.
+        if (y >= 80) {
+          nav.classList.add('scrolled');
+          if (heroLogo) heroLogo.classList.add('is-hidden');
+        } else if (y < 60) {
+          nav.classList.remove('scrolled');
+          if (heroLogo) heroLogo.classList.remove('is-hidden');
         }
       }
 
-      /* Throttled scroll handler using requestAnimationFrame */
-      var splitRafPending = false;
+      var rafPending = false;
       function onScrollSplit() {
-        if (splitRafPending) return;
-        splitRafPending = true;
+        if (rafPending) return;
+        rafPending = true;
         requestAnimationFrame(function() {
-          splitRafPending = false;
-          var y = window.scrollY;
-          /* Sticky nav threshold: 60px (existing) */
-          if (y > 60) {
-            nav.classList.add('scrolled');
-          } else {
-            nav.classList.remove('scrolled');
-          }
-          /* Split-Logo threshold: 80px */
-          applySplitState(y <= 80);
+          rafPending = false;
+          onScrollTransition();
         });
       }
 
       window.addEventListener('scroll', onScrollSplit, { passive: true });
 
-      /* Initialize state on page load (scrollY likely 0) */
-      /* Use a short delay to let layout settle after fonts/images load */
+      // Initialize on load
       setTimeout(function() {
-        applySplitState(window.scrollY <= 80);
-      }, 120);
+        onScrollTransition();
+      }, 100);
 
-      /* Re-calculate offset on resize (viewport change) */
-      window.addEventListener('resize', function() {
-        if (window.scrollY <= 80) {
-          applySplitState(true);
-        }
-      }, { passive: true });
+      // Re-calculate on resize
+      window.addEventListener('resize', onScrollSplit, { passive: true });
 
       function openDrawer() {
         drawer.classList.add('open');
@@ -4523,11 +4586,15 @@
         localStorage.setItem(STORAGE_KEY, '1');
         spawnPetalBurst();
         popup.classList.add('popup--hidden');
+        document.body.classList.remove('popup-active');
       }
 
       function showPopup() {
         var popup = document.getElementById('newClientPopup');
-        if (popup) popup.classList.remove('popup--hidden');
+        if (popup) {
+          popup.classList.remove('popup--hidden');
+          document.body.classList.add('popup-active');
+        }
       }
 
       if (shouldShow()) {
