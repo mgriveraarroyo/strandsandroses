@@ -746,7 +746,7 @@
        so the centered arc+silhouette fill it and start at the left edge instead of floating center-left */
     .hero__logo-wrapper {
       position: relative;
-      width: clamp(240px, 30vw, 420px);
+      width: clamp(330px, 40vw, 580px); /* v5.2.10 · woman enlarged for real (bigger figure relative to the name) */
       margin: 0 0 var(--space-sm);
       display: flex;
       flex-direction: column;
@@ -759,18 +759,20 @@
     .hero__logo-wrapper::before {
       content: "";
       position: absolute;
-      width: 160%;
-      height: 165%;
+      width: 135%;
+      height: 150%;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      /* v5.2.9 · shadow CONCENTRATED on the figure (lower-center), pulled off the arc and the upper
+         corners (Soberano: "exceso de sombra" arriba) · color approved · canonical wine-rose, never black */
       background: radial-gradient(
-        ellipse 56% 60% at 50% 46%,
-        rgba(10,10,10,0.74) 0%,
-        rgba(10,10,10,0.50) 40%,
-        rgba(10,10,10,0.0) 76%
+        ellipse 44% 52% at 50% 60%,
+        rgba(48,22,34,0.74) 0%,
+        rgba(48,22,34,0.40) 46%,
+        rgba(48,22,34,0.0) 74%
       );
-      filter: blur(12px);
+      filter: blur(14px);
       z-index: 0;
       pointer-events: none;
     }
@@ -783,16 +785,16 @@
       top: 52%;
       left: 50%;
       transform: translate(-50%, -42%);
-      background: radial-gradient(circle, rgba(227,119,155,0.22) 0%, rgba(227,119,155,0.06) 55%, transparent 80%);
+      background: radial-gradient(circle, rgba(227,119,155,0.32) 0%, rgba(227,119,155,0.12) 50%, transparent 78%); /* v5.2.8 · warmer rose halo wraps + lifts the figure */
       filter: blur(18px);
       z-index: 0;
       pointer-events: none;
     }
     
     .hero__logo-arc {
-      width: 100%;
+      width: 76%; /* v5.2.10 · name as a tighter crown so the woman dominates */
       height: auto;
-      margin-bottom: -32px; /* Pulls the arched text down so it rests perfectly as a crown */
+      margin: 0 auto -52px; /* v5.2.10 · lowered toward the figure (more negative) to close the empty gap · centered crown */
       z-index: 2;
       overflow: visible;
     }
