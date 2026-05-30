@@ -706,17 +706,33 @@
 
     .hero__bg.loaded { transform: scale(1); }
 
-    /* Cinematic gradient overlay */
+    /* Cinematic gradient overlay · v5.3 — directional light: anchors the lower-left text column
+       (contrast/WCAG) while the woman on the right breathes · + soft vignette for depth */
     .hero__overlay {
       position: absolute;
       inset: 0;
       background:
+        /* directional · dark at bottom-left (text), transparent toward the woman (upper-right) */
+        linear-gradient(
+          75deg,
+          rgba(10,10,10,0.78) 0%,
+          rgba(10,10,10,0.46) 32%,
+          rgba(10,10,10,0.12) 56%,
+          rgba(10,10,10,0.0) 76%
+        ),
+        /* vertical floor for the bottom headline + cinematic top-to-bottom depth */
         linear-gradient(
           to bottom,
-          rgba(10,10,10,0.15) 0%,
-          rgba(10,10,10,0.05) 30%,
-          rgba(10,10,10,0.45) 65%,
-          rgba(10,10,10,0.88) 100%
+          rgba(10,10,10,0.12) 0%,
+          rgba(10,10,10,0.0) 30%,
+          rgba(10,10,10,0.40) 70%,
+          rgba(10,10,10,0.85) 100%
+        ),
+        /* soft cinematic vignette, weighted toward the lower-left */
+        radial-gradient(
+          ellipse 130% 115% at 30% 58%,
+          transparent 46%,
+          rgba(10,10,10,0.32) 100%
         );
     }
 
@@ -736,7 +752,7 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      padding: var(--space-3xl) 0 var(--space-2xl);
+      padding: 7.5rem 0 var(--space-xl); /* v5.3.1 · top air trimmed 9rem→7.5rem (still clears the 100px nav by ~20px) · bottom 6rem→4rem to lift the stack toward the fold */
       transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       will-change: transform;
     }
@@ -746,8 +762,9 @@
        so the centered arc+silhouette fill it and start at the left edge instead of floating center-left */
     .hero__logo-wrapper {
       position: relative;
-      width: clamp(330px, 40vw, 580px); /* v5.2.10 · woman enlarged for real (bigger figure relative to the name) */
-      margin: 0 0 var(--space-sm);
+      width: clamp(240px, 22vw, 320px); /* v5.3.1 · curated scale to rescue CTAs above the fold (Antigravity measured: was 576px = 65% of viewport height) — figure stays dominant at contained scale */
+      max-height: 42vh; /* v5.3.1 · viewport-height cap so short laptops (768) shrink the figure instead of overflowing */
+      margin: 0 0 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -792,9 +809,9 @@
     }
     
     .hero__logo-arc {
-      width: 76%; /* v5.2.10 · name as a tighter crown so the woman dominates */
+      width: 72%; /* v5.3 · tighter crown wrapping the head, like the original logo */
       height: auto;
-      margin: 0 auto -52px; /* v5.2.10 · lowered toward the figure (more negative) to close the empty gap · centered crown */
+      margin: 0 auto -76px; /* v5.3.1 · proportional negative margin preserves the D1 head-hug at the reduced wrapper scale (was -120px @576px wrapper → -76px @360px keeps same hug ratio) */
       z-index: 2;
       overflow: visible;
     }
@@ -832,11 +849,14 @@
       font-family: var(--font-serif);
       font-size: var(--text-hero);
       font-weight: 300;
-      line-height: 1.0;
+      line-height: 1.05; /* v5.3.1 · slight holgura prevents typographic collision on the fluid modular scale */
       letter-spacing: -0.02em;
       color: var(--canvas);
       max-width: 820px;
+      margin-top: -90px; /* v5.3.1 · controlled overlap — title rises into the base of the line-art silhouette (Vogue-cover depth · line-art is thin so text reads clean) */
       margin-bottom: var(--space-md);
+      position: relative;
+      z-index: 2; /* above the line-art silhouette (z-index 1) */
     }
 
     .hero__title em {
@@ -851,8 +871,18 @@
       color: #E3779B; /* B2: recolored to match title rose — client request */
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: var(--space-xl); /* R1+R2 · tagline removed · spacing adjusted to CTAs · client request 2026-05-24 */
+      margin-bottom: var(--space-lg); /* v5.3 · tightened subtitle→CTA jump (was space-xl 64px → 40px · lifts CTAs off the bottom) */
       white-space: nowrap;
+    }
+
+    /* v5.3.1 · short-laptop rescue (1366×768 and similar): the editorial hero is genuinely tall, so on
+       low-height viewports we trim the top air, deepen the Vogue overlap, and lightly contain the figure —
+       this keeps the CTAs above the fold WITHOUT shrinking the figure on tall desktops. */
+    @media (min-width: 769px) and (max-height: 820px) {
+      .hero__content { padding-top: 6.5rem; }
+      .hero__logo-wrapper { width: clamp(220px, 20vw, 300px); margin-bottom: 8px; }
+      .hero__title { margin-top: -118px; }
+      .hero__subtitle { margin-bottom: var(--space-md); }
     }
 
     .hero__actions {
@@ -2465,14 +2495,27 @@
       .hero__bg {
         background-position: 28% 20% !important; /* Slide the hand & champagne cup out of frame */
       }
+      /* v5.3 · keep the cinematic effect on small screens (was a flat vertical gradient that lost the depth) */
       .hero__overlay {
         background:
           linear-gradient(
+            70deg,
+            rgba(10,10,10,0.72) 0%,
+            rgba(10,10,10,0.40) 38%,
+            rgba(10,10,10,0.10) 62%,
+            rgba(10,10,10,0.0) 82%
+          ),
+          linear-gradient(
             to bottom,
-            rgba(10,10,10,0.30) 0%,
-            rgba(10,10,10,0.15) 30%,
-            rgba(10,10,10,0.55) 65%,
+            rgba(10,10,10,0.22) 0%,
+            rgba(10,10,10,0.05) 28%,
+            rgba(10,10,10,0.50) 68%,
             rgba(10,10,10,0.92) 100%
+          ),
+          radial-gradient(
+            ellipse 140% 120% at 32% 60%,
+            transparent 44%,
+            rgba(10,10,10,0.34) 100%
           ) !important;
       }
     }
