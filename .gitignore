@@ -1,1 +1,5 @@
 *.bak
+_source/
+README_INSTAGRAM_WIDGET.md
+*.bak
+_internal_nondeployed/
